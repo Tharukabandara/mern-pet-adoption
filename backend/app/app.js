@@ -63,33 +63,7 @@ app.post(
     } else {
       return;
     }
-
-    // // Handle the event
-    // switch (event.type) {
-    //     case "payment_intent.succeeded":
-    //         const payment_Intent = event.data.object;
-    //         // Then define and call a function to handle the event payment_intent.succeeded
-    //         break;
-    //       // ... handle other event types
-    //       default:
-    //         console.log(`Unhandled event type ${event.type}`);
-
-    // }
-
-    // Return a 200 response to acknowledge receipt of the event
-    // response.send();
-
-    // if (event.type === "checkout.session.completed") {
-    //   // Handle successful checkout session here
-    //   console.log('Checkout session was completed successfully!');
-    //   const session = event.data.object;
-
-    //   // Example: fulfill the purchase
-    //   // fulfillOrder(session);
-    // }
-
-    // response.status(200).json({ received: true });
-    // response.send();
+ 
   }
 );
 
