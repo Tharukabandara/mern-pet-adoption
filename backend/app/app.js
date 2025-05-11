@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import cors from "cors";
 import Stripe from "stripe";
 dotenv.config();
 import express from "express";
@@ -10,11 +11,12 @@ import categoriesRouter from "../routes/categoriesRouter.js";
 import petCategoriesRouter from "../routes/petCategoriesRouter.js";
 import orderRouter from "../routes/ordersRouter.js";
 import Order from "../model/Order.js";
+
 //db connect
 dbConnect();
-
 const app = express();
-
+//cors
+app.use(cors());
 //Stripe webhook
 //stripe instance
 const stripe = new Stripe(process.env.STRIPE_KEY);
