@@ -14,7 +14,6 @@ import ManageStocks from "./components/Admin/Products/ManageStocks";
 import CategoryToAdd from "./components/Admin/Categories/CategoryToAdd";
 import AddCategory from "./components/Admin/Categories/AddCategory";
 import AddBrand from "./components/Admin/Categories/AddBrand";
-import AddColor from "./components/Admin/Categories/AddColor";
 import AllCategories from "./components/HomePage/AllCategories";
 import Product from "./components/Users/Products/Product";
 import ShoppingCart from "./components/Users/Products/ShoppingCart";
@@ -25,6 +24,8 @@ import OrdersList from "./components/Admin/Orders/OdersList";
 import ManageOrders from "./components/Admin/Orders/ManageOrders";
 import Customers from "./components/Admin/Orders/Customers";
 import BrandsColorsList from "./components/Admin/Categories/BrandsColorsList";
+import AuthRoute from "./components/AuthRoute/AuthRoute";
+import AdminRoutes from "./components/AuthRoute/AdminRoutes";
 
 const App = () => {
   return (
@@ -33,7 +34,11 @@ const App = () => {
       {/* hide navbar if admin */}
       <Routes>
         {/* nested route */}
-        <Route path="admin" element={<AdminDashboard />}>
+        <Route path="admin" element={
+          <AdminRoutes>
+            <AdminDashboard />
+          </AdminRoutes>
+        }>
           {/* products */} <Route path="" element={<OrdersList />} />
           <Route path="add-product" element={<AddProduct />} />
           <Route path="manage-products" element={<ManageStocks />} />
@@ -46,9 +51,6 @@ const App = () => {
           {/* brand category */}
           <Route path="add-brand" element={<AddBrand />} />
           <Route path="all-brands" element={<BrandsColorsList />} />
-          {/* color category */}
-          <Route path="add-color" element={<AddColor />} />
-          <Route path="all-colors" element={<BrandsColorsList />} />
           {/* Orders */}
           <Route path="manage-orders" element={<ManageOrders />} />
           <Route path="order-payment" element={<OrderPayment />} />

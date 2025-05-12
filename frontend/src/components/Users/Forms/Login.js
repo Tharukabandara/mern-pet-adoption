@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUserAction } from "../../../redux/slices/users/usersSlice";
+import ErrorMsg from "../../ErrorMsg/ErrorMsg";
+import LoadingComponent from "../../LoadingComp/LoadingComponent";
 
 const Login = () => {
   //dispatch
@@ -49,6 +51,8 @@ const Login = () => {
                 <p className="mb-10 font-semibold font-heading">
                   Happy to see you again
                 </p>
+                {/* err */}
+                {error && <ErrorMsg message={error?.message} />}
                 <form
                   className="flex flex-wrap -mx-4"
                   onSubmit={onSubmitHandler}>
@@ -82,9 +86,13 @@ const Login = () => {
                   </div>
 
                   <div className="w-full px-4">
-                    <button className="bg-blue-800 hover:bg-blue-900 text-white font-bold font-heading py-5 px-8 rounded-md uppercase">
+                    {loading ? ( 
+                    <LoadingComponent /> 
+                    ):(
+                      <button className="bg-blue-800 hover:bg-blue-900 text-white font-bold font-heading py-5 px-8 rounded-md uppercase">
                       Login
                     </button>
+                    )}
                   </div>
                 </form>
               </div>
