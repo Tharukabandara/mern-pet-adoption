@@ -140,7 +140,7 @@ export default function Navbar() {
           <div className="bg-gray-900">
             <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
               <p className="flex-1 text-center text-sm font-medium text-white lg:flex-none">
-                Get free delivery on orders over $100
+                Welcome to Paw Mart
               </p>
 
               <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
@@ -166,15 +166,15 @@ export default function Navbar() {
           <div className="bg-white">
             <div className="border-b border-gray-200">
               <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div className="flex h-16 items-center justify-between">
+                <div className="flex h-20 items-center justify-between">
                   {/* Logo (lg+) */}
                   <div className="hidden lg:flex lg:items-center">
                     <Link to="/">
-                      <span className="sr-only">Your Company</span>
+                      <span className="sr-only">Paw Mart</span>
                       <img
                         className="h-32 pt-2 w-auto"
                         src={logo}
-                        alt="i-novotek logo"
+                        alt="Paw Mart logo"
                       />
                     </Link>
                   </div>
