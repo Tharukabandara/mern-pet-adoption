@@ -2,13 +2,13 @@ import express from 'express';
 import { createCategoryCtrl, getAllCategoriesCtrl, getSingleCategoryCtrl, updateCategoryCtrl, deleteCategoryCtrl } from '../controllers/categoriesCtrl.js';
 import { isLoggedIn } from '../middlewares/isLoggedIn.js';
 import categoryFileUpload from '../config/categoryFileUpload.js';
-
+import isAdmin from '../middlewares/isAdmin.js';
 const categoriesRouter = express.Router();
 
 categoriesRouter.post("/", isLoggedIn, categoryFileUpload.single("file"), createCategoryCtrl);
 categoriesRouter.get("/", getAllCategoriesCtrl);
 categoriesRouter.get("/:id", getSingleCategoryCtrl);
-categoriesRouter.put("/:id", updateCategoryCtrl);
-categoriesRouter.delete("/:id", deleteCategoryCtrl);
+categoriesRouter.put("/:id", isLoggedIn, isAdmin, updateCategoryCtrl);
+categoriesRouter.delete("/:id", isLoggedIn, isAdmin, deleteCategoryCtrl);
 
 export default categoriesRouter;

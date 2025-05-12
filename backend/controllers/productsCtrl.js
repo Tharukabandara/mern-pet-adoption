@@ -28,7 +28,7 @@ export const createProductCtrl = asyncHandler(async (req, res)=>{
     });
     if (!categoryFound) {
         throw new Error(
-            "Category not found, please create category first or check category name"
+            "Product Category not found, please create category first or check category name"
         );
     }
 

@@ -22,7 +22,7 @@ const ProductSchema = new Schema(
 
     petCategory: {
       type: String,
-      ref: "petCategory",
+      ref: "PetCategory",
       required: true,
     },
     
