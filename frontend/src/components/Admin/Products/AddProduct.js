@@ -5,10 +5,20 @@ import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import SuccessMsg from "../../SuccessMsg/SuccessMsg";
 import { fetchCategoriesAction } from "../../../redux/slices/categories/categoriesSlice";
 import { fetchPetCategoriesAction } from "../../../redux/slices/categories/petCategoriesSlice";
+import { createProductAction } from "../../../redux/slices/products/productSlices";
 
 
 export default function AddProduct() {
   const dispatch = useDispatch();
+
+  //files
+  const [files, setFiles] = useState([]);
+  const [fileErrs, setFileErrs] = useState([]);
+  //file handlechange
+  const fileHandleChange = (event) => {
+    const newFiles = Array.from(event.target.files);
+    setFiles(newFiles);
+  };
 
   //categories
   useEffect(() => {
@@ -37,7 +47,6 @@ export default function AddProduct() {
     description: "",
     category: "",
     petCategory: "",
-    images: "",
     price: "",
     totalQty: "",
   });
@@ -50,6 +59,12 @@ export default function AddProduct() {
   //onSubmit
   const handleOnSubmit = (e) => {
     e.preventDefault();
+    //dispatch
+    dispatch(createProductAction({
+      ...formData,
+      files,
+    }));
+    
     //reset form data
     // setFormData({
     //   name: "",
@@ -164,8 +179,9 @@ export default function AddProduct() {
                           <input
                             name="images"
                             value={formData.images}
-                            onChange={handleOnChange}
+                            onChange={fileHandleChange}
                             type="file"
+                            multiple
                           />
                         </label>
                       </div>
