@@ -24,8 +24,7 @@ export default function AddProduct() {
   }, [dispatch]);
 
   //select data from store
-  const { petCategories: { petCategories} } = useSelector((state)=> state?.petCategories?.petCategories);
-  console.log(categories);
+  const { petCategories } = useSelector((state)=> state?.petCategories?.petCategories);
   
 
 
