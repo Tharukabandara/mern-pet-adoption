@@ -2,23 +2,23 @@ import { Link } from "react-router-dom";
 import HomeCategories from "./HomeCategories";
 import HomeProductTrending from "./HomeProductTrending";
 
-const offers = [
-  {
-    name: "Download the app",
-    description: "Get an exclusive $5 off code",
-    href: "#",
-  },
-  {
-    name: "Return when you're ready",
-    description: "60 days of free returns",
-    href: "#",
-  },
-  {
-    name: "Sign up for our newsletter",
-    description: "15% off your first order",
-    href: "#",
-  },
-];
+// const offers = [
+//   {
+//     name: "Download the app",
+//     description: "Get an exclusive $5 off code",
+//     href: "#",
+//   },
+//   {
+//     name: "Return when you're ready",
+//     description: "60 days of free returns",
+//     href: "#",
+//   },
+//   {
+//     name: "Sign up for our newsletter",
+//     description: "15% off your first order",
+//     href: "#",
+//   },
+// ];
 
 const perks = [
   {
@@ -52,11 +52,26 @@ const perks = [
 ];
 export default function Example() {
   return (
-    <div className="bg-[#7f6363]">
+    <div className="bg-[#ede4dd]">
       <main>
+        <section
+            aria-labelledby="sale-heading"
+            className="relative mx-auto flex max-w-7x flex-col items-center px-4 pt-4 text-center sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-2xl lg:max-w-none">
+              <h2
+                id="sale-heading"
+                className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
+                Welcome To Pet Mart
+              </h2>
+              <a
+                href="#"
+                className="mt-6 inline-block w-full rounded-md border border-transparent bg- py-3 px-8 font-medium text-white hover:bg- sm:w-auto">
+              </a>
+            </div>
+          </section>
         {/* Hero */}
         <div className="flex flex-col border-b border-gray-200 lg:border-0">
-          <nav aria-label="Offers" className="order-last lg:order-first">
+          {/* <nav aria-label="Offers" className="order-last lg:order-first">
             <div className="mx-auto max-w-7xl lg:px-8">
               <ul
                 role="list"
@@ -75,28 +90,28 @@ export default function Example() {
                 ))}
               </ul>
             </div>
-          </nav>
+          </nav> */}
 
           <div className="relative">
             <div
               aria-hidden="true"
-              className="absolute hidden h-full w-1/2 bg-gray-100 lg:block"
+              className="absolute hidden h-full w-1/2 lg:block"
             />
             <div className="relative bg-gray-100 lg:bg-transparent">
               <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:grid lg:grid-cols-2 lg:px-8">
                 <div className="mx-auto max-w-2xl py-24 lg:max-w-none lg:py-64">
                   <div className="lg:pr-16">
                     <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl xl:text-6xl">
-                      All in one Pet shop
+                      Online Shopping Like Never Before
                     </h1>
                     <p className="mt-4 text-xl text-gray-600">
-                      New products are added every week. Check back often to see
+                      Leading Platform of Pet adoption and Marketplace for Pet Accessories in Sri Lanka.
                     </p>
                     <div className="mt-6">
                       <a
                         href="products-filters"
                         className="inline-block rounded-md border border-transparent bg-indigo-600 py-3 px-8 font-medium text-white hover:bg-indigo-700">
-                        Shop Products
+                        Pet Ads section
                       </a>
                     </div>
                   </div>
@@ -122,7 +137,7 @@ export default function Example() {
               <h2
                 id="sale-heading"
                 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
-                Get 25% off during our one-time sale
+                Explore our wide Range of Pet Accessories
               </h2>
               <p className="mx-auto mt-4 max-w-xl text-xl text-gray-600">
                 Most of our products are limited releases that won't come back.
@@ -131,7 +146,7 @@ export default function Example() {
               <a
                 href="#"
                 className="mt-6 inline-block w-full rounded-md border border-transparent bg-gray-900 py-3 px-8 font-medium text-white hover:bg-gray-800 sm:w-auto">
-                Get access to our one-time sale
+                Shop Products
               </a>
             </div>
           </section>
