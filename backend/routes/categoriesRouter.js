@@ -5,7 +5,9 @@ import categoryFileUpload from '../config/categoryFileUpload.js';
 import isAdmin from '../middlewares/isAdmin.js';
 const categoriesRouter = express.Router();
 
-categoriesRouter.post("/", isLoggedIn, categoryFileUpload.single("file"), createCategoryCtrl);
+categoriesRouter.post("/", isLoggedIn, isAdmin, 
+    categoryFileUpload.single("file"), 
+    createCategoryCtrl);
 categoriesRouter.get("/", getAllCategoriesCtrl);
 categoriesRouter.get("/:id", getSingleCategoryCtrl);
 categoriesRouter.put("/:id", isLoggedIn, isAdmin, updateCategoryCtrl);

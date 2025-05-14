@@ -15,6 +15,8 @@ import {
   PlusIcon,
 } from "@heroicons/react/20/solid";
 import Products from "./Products";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProductsAction } from "../../../redux/slices/products/productSlices";
 
 const sortOptions = [
   { name: "Most Popular", href: "#", current: true },
@@ -71,6 +73,17 @@ export default function ProductsFilters() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
+  const dispatch = useDispatch();
+
+const { loading: productsLoading, error: productsError, products } = useSelector(
+  (state) => state?.products
+);
+
+useEffect(() => {
+  dispatch(fetchProductsAction());
+}, [dispatch]);
+
+
   let colorsLoading;
   let colorsError;
   let colors;
@@ -79,9 +92,6 @@ export default function ProductsFilters() {
   let setSize;
   let setColor;
   let setBrand;
-  let productsLoading;
-  let productsError;
-  let products;
 
   return (
     <div className="bg-white">
@@ -281,7 +291,7 @@ export default function ProductsFilters() {
                                     className="h-4 w-4 rounded border-gray-300 cursor-pointer text-indigo-600 focus:ring-indigo-500"
                                   />
                                   <label className="ml-3 min-w-0 flex-1 text-gray-500">
-                                    $ {price?.amount}
+                                    Rs. {price?.amount}
                                   </label>
                                 </div>
                               ))}
@@ -302,7 +312,7 @@ export default function ProductsFilters() {
                           <h3 className="-mx-2 -my-3 flow-root">
                             <Disclosure.Button className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
                               <span className="font-medium text-gray-900">
-                                Brand
+                                Pet
                               </span>
                               <span className="ml-6 flex items-center">
                                 {open ? (
@@ -576,7 +586,7 @@ export default function ProductsFilters() {
                                 className="h-4 w-4 rounded border-gray-300 cursor-pointer text-indigo-600 focus:ring-indigo-500"
                               />
                               <label className="ml-3 min-w-0 flex-1 text-gray-500">
-                                $ {price?.amount}
+                                Rs. {price?.amount}
                               </label>
                             </div>
                           ))}
@@ -597,7 +607,7 @@ export default function ProductsFilters() {
                       <h3 className="-mx-2 -my-3 flow-root">
                         <Disclosure.Button className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
                           <span className="font-medium text-gray-900">
-                            Brand
+                            Pet
                           </span>
                           <span className="ml-6 flex items-center">
                             {open ? (

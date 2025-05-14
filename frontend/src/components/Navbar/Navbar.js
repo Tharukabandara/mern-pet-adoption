@@ -72,22 +72,17 @@ export default function Navbar() {
                   {categoriesToDisplay?.length <= 0 ? (
                     <>
                       <Link
-                        to={`/products?category=Accessories`}
+                        to={`/products-filters`}
+                        className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800">
+                        Pet Ads
+                      </Link>
+
+                      <Link
+                        to={`/products-filters`}
                         className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800">
                         Pet Accessories
                       </Link>
 
-                      <Link
-                        to="/"
-                        className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800">
-                        Men
-                      </Link>
-
-                      <Link
-                        to="/"
-                        className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800">
-                        Women
-                      </Link>
                     </>
                   ) : (
                     categoriesToDisplay?.map((category) => {
@@ -186,22 +181,17 @@ export default function Navbar() {
                         {categoriesToDisplay?.length <= 0 ? (
                           <>
                       <Link
-                        to={`/products?category=Accessories`}
+                        to={`/products-filters`}
+                        className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800">
+                        Pet Ads
+                      </Link>
+
+                      <Link
+                        to={`/products-filters`}
                         className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800">
                         Pet Accessories
                       </Link>
 
-                      <Link
-                        to="/"
-                        className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800">
-                        Men
-                      </Link>
-
-                      <Link
-                        to="/"
-                        className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800">
-                        Women
-                      </Link>
                           </>
                         ) : (
                           categoriesToDisplay?.map((category) => {

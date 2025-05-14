@@ -17,7 +17,19 @@ export default function AddProduct() {
   //file handlechange
   const fileHandleChange = (event) => {
     const newFiles = Array.from(event.target.files);
+    //validation
+    const newErrs = [];
+    newFiles.forEach((file) =>{
+      if (file?.size > 1000000) {
+        newErrs.push(`${file?.name} is too large`);
+      }
+      if (!file?.type?.startsWith("image/")) {
+        newErrs.push(`${file?.name} is not an image`);
+      };
+    });
     setFiles(newFiles);
+    setFileErrs(newErrs);
+
   };
 
   //categories
@@ -26,7 +38,7 @@ export default function AddProduct() {
   }, [dispatch]);
 
   //select data from store
-  const {categories, loading, error} = useSelector((state)=> state?.categories?.categories);
+  const { categories } = useSelector((state)=> state?.categories?.categories);
 
   //pet categories
   useEffect(() => {
@@ -35,11 +47,6 @@ export default function AddProduct() {
 
   //select data from store
   const { petCategories } = useSelector((state)=> state?.petCategories?.petCategories);
-  
-
-
-  let
-    isAdded;
 
   //---form data---
   const [formData, setFormData] = useState({
@@ -56,9 +63,15 @@ export default function AddProduct() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  //get product from store
+  const {product, isAdded, loading, error} = useSelector(
+    (state)=> state?.products);
+
   //onSubmit
   const handleOnSubmit = (e) => {
     e.preventDefault();
+    console.log(fileErrs);
+    
     //dispatch
     dispatch(createProductAction({
       ...formData,
@@ -66,20 +79,23 @@ export default function AddProduct() {
     }));
     
     //reset form data
-    // setFormData({
-    //   name: "",
-    //   description: "",
-    //   category: "",
-    //   petCategory: "",
-    //   images: "",
-    //   price: "",
-    //   totalQty: "",
-    // });
+    setFormData({
+      name: "",
+      description: "",
+      category: "",
+      petCategory: "",
+      images: "",
+      price: "",
+      totalQty: "",
+    });
   };
 
   return (
     <>
       {error && <ErrorMsg message={error?.message} />}
+      {fileErrs?.length >0 && (
+        <ErrorMsg message="file too large or upload an image" />
+      )}
       {isAdded && <SuccessMsg message="Product Added Successfully" />}
       <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -186,7 +202,7 @@ export default function AddProduct() {
                         </label>
                       </div>
                       <p className="text-xs text-gray-500">
-                        PNG, JPG, GIF up to 10MB
+                        PNG, JPG, GIF up to 1MB
                       </p>
                     </div>
                   </div>
@@ -246,6 +262,7 @@ export default function AddProduct() {
                   <LoadingComponent />
                 ) : (
                   <button
+                    disabled={fileErrs?.length >0}
                     type="submit"
                     className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                     Add Product
