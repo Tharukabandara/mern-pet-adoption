@@ -3,20 +3,35 @@ import { Link } from "react-router-dom";
 import ErrorComponent from "../../ErrorMsg/ErrorMsg";
 import SuccessMsg from "../../SuccessMsg/SuccessMsg";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
+import { useDispatch, useSelector } from "react-redux";
+import { createCategoryAction } from "../../../redux/slices/categories/categoriesSlice";
 
 export default function CategoryToAdd() {
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     name: "",
   });
-  //---onChange---
+  const [image, setImage] = useState(null);
+
+  const { error, isAdded, loading } = useSelector((state) => state.categories);
+
+  // Handle name change
   const handleOnChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  let { error, isAdded, loading } = {};
-  //onSubmit
+
+  // Handle image file
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
+  };
+
+  // Submit form
   const handleOnSubmit = (e) => {
     e.preventDefault();
+    dispatch(createCategoryAction({ name: formData.name, image }));
   };
+
   return (
     <>
       {error && <ErrorComponent message={error?.message} />}
@@ -28,11 +43,11 @@ export default function CategoryToAdd() {
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            stroke-width="1.5"
+            strokeWidth="1.5"
             stroke="currentColor">
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125"
             />
           </svg>
@@ -44,9 +59,11 @@ export default function CategoryToAdd() {
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-lg">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
             <form className="space-y-6" onSubmit={handleOnSubmit}>
+              
+              {/* Name input */}
               <div>
                 <label
-                  htmlFor="email"
+                  htmlFor="name"
                   className="block text-sm font-medium text-gray-700">
                   Name
                 </label>
@@ -55,10 +72,28 @@ export default function CategoryToAdd() {
                     onChange={handleOnChange}
                     value={formData.name}
                     name="name"
+                    required
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>
               </div>
+
+              {/* Optional image input */}
+              <div>
+                <label
+                  htmlFor="image"
+                  className="block text-sm font-medium text-gray-700">
+                  Category Image (optional)
+                </label>
+                <input
+                  type="file"
+                  onChange={handleImageChange}
+                  accept="image/*"
+                  className="mt-1 text-sm"
+                />
+              </div>
+
+              {/* Submit */}
               <div>
                 {loading ? (
                   <LoadingComponent />
@@ -72,6 +107,7 @@ export default function CategoryToAdd() {
               </div>
             </form>
 
+            {/* Links */}
             <div className="mt-6">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
@@ -83,33 +119,21 @@ export default function CategoryToAdd() {
               </div>
 
               <div className="mt-6 grid grid-cols-3 gap-3">
-                <div>
-                  <Link
-                    to="/admin/add-brand"
-                    className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50">
-                    Add Brand
-                  </Link>
-                </div>
-
-                <div>
-                  <div>
-                    <Link
-                      to="/admin/add-color"
-                      className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50">
-                      Add Color
-                    </Link>
-                  </div>
-                </div>
-
-                <div>
-                  <div>
-                    <Link
-                      to="/admin/add-category"
-                      className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50">
-                      Add Category
-                    </Link>
-                  </div>
-                </div>
+                <Link
+                  to="/admin/add-brand"
+                  className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50">
+                  Add Brand
+                </Link>
+                <Link
+                  to="/admin/add-color"
+                  className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50">
+                  Add Color
+                </Link>
+                <Link
+                  to="/admin/add-category"
+                  className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50">
+                  Add Category
+                </Link>
               </div>
             </div>
           </div>

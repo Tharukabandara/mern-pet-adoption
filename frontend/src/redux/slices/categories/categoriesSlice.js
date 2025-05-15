@@ -16,34 +16,34 @@ const initialState = {
 
 //create Categories action
 export const createCategoryAction = createAsyncThunk(
-    "category/create",
-    async (payload, { rejectWithValue, getState, dispatch }) => {
-        try {
-            const { name, image } = payload;
-            //formData
-            const formData = new FormData();
-            formData.append("name", name);
-            formData.append("image", image);
-            //Token - Authenticated
-            const token = getState()?.users?.userAuth?.userInfo?.token;
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            };
-            //Images
-            const {data} = await axios.post(`${baseURL}/categories`, 
-            {
-                name,
-            },
-        config
-        );
-            return data;
-        } catch (error) {
-            return rejectWithValue(error?.response?.data);
-        }
+  "category/create",
+  async (payload, { rejectWithValue, getState }) => {
+    try {
+      const { name, image } = payload;
+
+      // Prepare FormData
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("image", image);
+
+      // Auth headers
+      const token = getState()?.users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      };
+
+      // Send request
+      const { data } = await axios.post(`${baseURL}/categories`, formData, config);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
     }
+  }
 );
+
 
 //Fetch Categories action
 export const fetchCategoriesAction = createAsyncThunk(

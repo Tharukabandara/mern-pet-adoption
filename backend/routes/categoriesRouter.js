@@ -6,7 +6,7 @@ import isAdmin from '../middlewares/isAdmin.js';
 const categoriesRouter = express.Router();
 
 categoriesRouter.post("/", isLoggedIn, isAdmin, 
-    categoryFileUpload.single("file"), 
+    categoryFileUpload.single("image"), 
     createCategoryCtrl);
 categoriesRouter.get("/", getAllCategoriesCtrl);
 categoriesRouter.get("/:id", getSingleCategoryCtrl);
