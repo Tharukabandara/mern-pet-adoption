@@ -1,6 +1,7 @@
 import axios from "axios";
 import baseURL from "../../../utils/baseURL";
 import { createAsyncThunk, createSlice, } from "@reduxjs/toolkit";
+import { resetErrAction, resetSuccessAction } from "../globalActions/globalActions";
 
 
 //initialState
@@ -16,32 +17,24 @@ const initialState = {
 
 //create Pet Category action
 export const createPetCategoryAction = createAsyncThunk(
-    "petCategory/create",
-    async (payload, { rejectWithValue, getState, dispatch }) => {
-        try {
-            const { name } = 
-            payload;
+  "petCategory/create",
+  async (payload, { rejectWithValue, getState }) => {
+    try {
+      const token = getState()?.users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          //Image Upload
+          "Content-Type": "multipart/form-data", 
+        },
+      };
 
-            //make request
-            //Token - Authenticated
-            const token = getState()?.users?.userAuth?.userInfo?.token;
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            };
-            //Images
-            const {data} = await axios.post(`${baseURL}/petCategories`, 
-            {
-                name,
-            },
-        config
-        );
-            return data;
-        } catch (error) {
-            return rejectWithValue(error?.response?.data);
-        }
+      const { data } = await axios.post(`${baseURL}/petCategories`, payload, config);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
     }
+  }
 );
 
 //Fetch Pet Categories action
@@ -94,6 +87,7 @@ const petCategorySlice = createSlice({
             state.isAdded = false;
             state.error = action.payload;
         });
+        
         
     },
 });

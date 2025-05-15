@@ -59,7 +59,7 @@ export default function CategoryToAdd() {
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-lg">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
             <form className="space-y-6" onSubmit={handleOnSubmit}>
-              
+
               {/* Name input */}
               <div>
                 <label
@@ -83,7 +83,7 @@ export default function CategoryToAdd() {
                 <label
                   htmlFor="image"
                   className="block text-sm font-medium text-gray-700">
-                  Category Image (optional)
+                  Category Image
                 </label>
                 <input
                   type="file"
@@ -106,35 +106,14 @@ export default function CategoryToAdd() {
                 )}
               </div>
             </form>
-
             {/* Links */}
+
             <div className="mt-6">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-gray-300" />
                 </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="bg-white px-2 text-gray-500">Or</span>
-                </div>
-              </div>
-
-              <div className="mt-6 grid grid-cols-3 gap-3">
-                <Link
-                  to="/admin/add-brand"
-                  className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50">
-                  Add Brand
-                </Link>
-                <Link
-                  to="/admin/add-color"
-                  className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50">
-                  Add Color
-                </Link>
-                <Link
-                  to="/admin/add-category"
-                  className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50">
-                  Add Category
-                </Link>
-              </div>
+              </div>              
             </div>
           </div>
         </div>

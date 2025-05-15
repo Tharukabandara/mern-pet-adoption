@@ -5,7 +5,7 @@ import categoryFileUpload from '../config/categoryFileUpload.js';
 import isAdmin from '../middlewares/isAdmin.js';
 const petCategoriesRouter = express.Router();
 
-petCategoriesRouter.post("/", isLoggedIn, isAdmin, categoryFileUpload.single("file"), createPetCategoryCtrl);
+petCategoriesRouter.post("/", isLoggedIn, isAdmin, categoryFileUpload.single("image"), createPetCategoryCtrl);
 petCategoriesRouter.get("/", getAllPetCategoriesCtrl);
 petCategoriesRouter.get("/:id", getSinglePetCategoryCtrl);
 petCategoriesRouter.put("/:id", isLoggedIn, isAdmin, updatePetCategoryCtrl);

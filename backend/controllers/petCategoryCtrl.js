@@ -15,7 +15,7 @@ export const createPetCategoryCtrl = asyncHandler(async (req, res) =>{
     }
     //create
     const petCategory = await PetCategory.create({
-        name: name.toLowerCase(),
+        name: name?.toLowerCase(),
         user: req.userAuthId,
         image: req.file.path,
     });

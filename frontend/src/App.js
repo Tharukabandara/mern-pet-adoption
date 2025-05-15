@@ -11,9 +11,7 @@ import OrderPayment from "./components/Users/Products/OrderPayment";
 import ManageCategories from "./components/Admin/Categories/ManageCategories";
 import UpdateProduct from "./components/Admin/Products/UpdateProduct";
 import ManageStocks from "./components/Admin/Products/ManageStocks";
-import CategoryToAdd from "./components/Admin/Categories/CategoryToAdd";
 import AddCategory from "./components/Admin/Categories/AddCategory";
-import AddBrand from "./components/Admin/Categories/AddBrand";
 import AllCategories from "./components/HomePage/AllCategories";
 import Product from "./components/Users/Products/Product";
 import ShoppingCart from "./components/Users/Products/ShoppingCart";
@@ -23,9 +21,10 @@ import UpdateCategory from "./components/Admin/Categories/UpdateCategory";
 import OrdersList from "./components/Admin/Orders/OdersList";
 import ManageOrders from "./components/Admin/Orders/ManageOrders";
 import Customers from "./components/Admin/Orders/Customers";
-import BrandsColorsList from "./components/Admin/Categories/BrandsColorsList";
 import AuthRoute from "./components/AuthRoute/AuthRoute";
 import AdminRoutes from "./components/AuthRoute/AdminRoutes";
+import AddPetCategory from "./components/Admin/Categories/AddPetCategory";
+
 
 const App = () => {
   return (
@@ -43,14 +42,13 @@ const App = () => {
           <Route path="add-product" element={<AddProduct />} />
           <Route path="manage-products" element={<ManageStocks />} />
           <Route path="products/edit/:id" element={<UpdateProduct />} />
-          {/* Category */}
-          <Route path="category-to-add" element={<CategoryToAdd />} />{" "}
-          <Route path="add-category" element={<AddCategory />} />
-          <Route path="manage-category" element={<ManageCategories />} />
+          {/* Product Category */}
+          <Route path="add-product-category" element={<AddCategory />} />
+          <Route path="manage-product-category" element={<ManageCategories />} />
           <Route path="edit-category/:id" element={<UpdateCategory />} />
-          {/* brand category */}
-          <Route path="add-brand" element={<AddBrand />} />
-          <Route path="all-brands" element={<BrandsColorsList />} />
+          {/* pet category */}
+          <Route path="add-pet-category" element={<AddPetCategory />} />
+
           {/* Orders */}
           <Route path="manage-orders" element={<ManageOrders />} />
           <Route path="order-payment" element={<OrderPayment />} />
