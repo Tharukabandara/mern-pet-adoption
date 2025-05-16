@@ -71,7 +71,7 @@ export const getPetAdsCtrl = asyncHandler(async (req, res) => {
 
     //filter by pet category
     if (req.query.petCategory) {
-        productQuery = productQuery.find({
+        petAdQuery = petAdQuery.find({
             petCategory: { $regex: req.query.petCategory, $options: "i"},
         });
     }
@@ -81,7 +81,7 @@ export const getPetAdsCtrl = asyncHandler(async (req, res) => {
         const priceRange = req.query.price.split("-");
         //gte: greater or equal
         //lte: less or equal
-        productQuery = productQuery.find({
+        petAdQuery = petAdQuery.find({
             price: { $gte: priceRange[0], $lte: priceRange[1] },
         });
     }

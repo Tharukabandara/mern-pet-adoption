@@ -27,11 +27,15 @@ export default function ProductsFilters() {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  const { category, pet, price, sort } = queryString.parse(location.search);
+  const query = queryString.parse(location.search);
+
+  const { category, pet, price, sort, name = "", page = 1 } = query;
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [priceRange, setPriceRange] = useState([0, 1000]);
-  const [selectedPet, setSelectedPet] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedPet, setSelectedPet] = useState(pet || "");
+  const [selectedCategory, setSelectedCategory] = useState(category || "");
+  const [searchName, setSearchName] = useState(name);
 
   const { loading: productsLoading, error: productsError, products } = useSelector(
     (state) => state?.products
@@ -46,12 +50,13 @@ export default function ProductsFilters() {
   }, [dispatch]);
 
   useEffect(() => {
-    const { category, pet, price, sort } = queryString.parse(location.search);
     const filters = {
       ...(category && { productCategory: category }),
       ...(pet && { petCategory: pet }),
       ...(price && { price }),
       ...(sort && { sort }),
+      ...(name && { name }),
+      ...(page && { page }),
     };
     dispatch(fetchProductsAction(filters));
   }, [dispatch, location.search]);
@@ -59,22 +64,23 @@ export default function ProductsFilters() {
   const updateQuery = (updatedParams) => {
     const currentParams = queryString.parse(location.search);
     const merged = { ...currentParams, ...updatedParams };
-    const query = queryString.stringify(merged);
-    navigate(`/products-filters?${query}`);
+    const queryStr = queryString.stringify(merged);
+    navigate(`/products-filters?${queryStr}`);
   };
 
   const clearFilters = () => {
     setPriceRange([0, 1000]);
     setSelectedPet("");
     setSelectedCategory("");
+    setSearchName("");
     navigate("/products-filters");
   };
 
-  const setPrice = (range) => updateQuery({ price: range });
   const setPet = (petName) => {
     setSelectedPet(petName);
     updateQuery({ pet: petName });
   };
+
   const setCategory = (catName) => {
     setSelectedCategory(catName);
     updateQuery({ category: catName });
@@ -88,6 +94,14 @@ export default function ProductsFilters() {
     updateQuery({ price: `${priceRange[0]}-${priceRange[1]}` });
   };
 
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    updateQuery({ name: searchName });
+  };
+
+  const totalPages = 5; 
+  const paginationButtons = Array.from({ length: totalPages }, (_, i) => i + 1);
+
   return (
     <div className="bg-white">
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -95,15 +109,27 @@ export default function ProductsFilters() {
           <h1 className="text-4xl font-bold tracking-tight text-gray-900">
             Product Filters
           </h1>
-          <button
-            type="button"
-            onClick={clearFilters}
-            className="bg-red-100 text-red-600 px-4 py-2 rounded hover:bg-red-200">
-            Clear All Filters
-          </button>
+          
         </div>
 
-        <section aria-labelledby="products-heading" className="pt-6 pb-24">
+        {/* Search bar */}
+      <form onSubmit={handleSearchSubmit} className="mb-4 flex gap-2">
+        <input
+          type="text"
+          value={searchName}
+          onChange={(e) => setSearchName(e.target.value)}
+          placeholder="Search by name"
+          className="border rounded px-4 py-2 flex-grow"
+        />
+        <button type="submit" className="bg-blue-500 text-white px-4 rounded">
+          Search
+        </button>
+        <button type="button" onClick={clearFilters} className="bg-red-200 text-red-600 px-4 rounded">
+          Clear filters
+        </button>
+      </form>
+
+        <section aria-labelledby="products-heading" className="pb-24">
           <h2 id="products-heading" className="sr-only">
             Products
           </h2>
@@ -203,7 +229,22 @@ export default function ProductsFilters() {
               ) : productsError ? (
                 <p className="text-red-500">{productsError}</p>
               ) : (
-                <Products products={products} />
+                <>
+                  <Products products={products} />
+
+                  {/* Pagination */}
+                  <div className="mt-6 flex justify-center gap-2">
+                    {paginationButtons.map((p) => (
+                      <button
+                        key={p}
+                        onClick={() => updateQuery({ page: p })}
+                        className={`px-3 py-1 rounded ${parseInt(page) === p ? "bg-blue-600 text-white" : "bg-gray-200"}`}
+                      >
+                        {p}
+                      </button>
+                    ))}
+                  </div>
+                </>
               )}
             </div>
           </div>

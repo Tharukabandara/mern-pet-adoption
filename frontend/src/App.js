@@ -24,6 +24,9 @@ import Customers from "./components/Admin/Orders/Customers";
 import AuthRoute from "./components/AuthRoute/AuthRoute";
 import AdminRoutes from "./components/AuthRoute/AdminRoutes";
 import AddPetCategory from "./components/Admin/Categories/AddPetCategory";
+import PetAdsPage from "./components/Pet Ads/PetAdsPage";
+import CreatePetAd from "./components/Pet Ads/CreatePetAds";
+import SinglePetAd from "./components/Pet Ads/SinglePetAd";
 
 
 const App = () => {
@@ -67,6 +70,11 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/customer-profile" element={<CustomerProfile />} />
+        {/* pet ads*/}
+        <Route path="/pet-ads" element={<PetAdsPage />} />
+        {/* <Route path="/pet-ads/:id" element={<SinglePetAdPage />} /> */}
+        <Route path="/create-pet-ad" element={<CreatePetAd />} />
+        <Route path="/pet-ads/:id" element={<SinglePetAd />} />
       </Routes>
     </BrowserRouter>
   );

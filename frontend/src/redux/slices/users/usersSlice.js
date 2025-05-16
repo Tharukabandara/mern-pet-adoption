@@ -92,8 +92,11 @@ const usersSlice = createSlice({
             state.loading = false;
         });
         //reset error action
-        builder.addCase(resetErrAction.pending, (state) => {
-            state.error = null;
+        builder.addCase(resetSuccessAction, (state) => {
+        state.isAdded = false;
+        });
+        builder.addCase(resetErrAction, (state) => {
+        state.error = null;
         });
     },
 });

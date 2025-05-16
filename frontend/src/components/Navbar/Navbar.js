@@ -72,7 +72,7 @@ export default function Navbar() {
                   {categoriesToDisplay?.length <= 0 ? (
                     <>
                       <Link
-                        to={`/products-filters`}
+                        to={`/pet-ads`}
                         className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800">
                         Pet Ads
                       </Link>
@@ -181,7 +181,7 @@ export default function Navbar() {
                         {categoriesToDisplay?.length <= 0 ? (
                           <>
                       <Link
-                        to={`/products-filters`}
+                        to={`/pet-ads`}
                         className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800">
                         Pet Ads
                       </Link>
