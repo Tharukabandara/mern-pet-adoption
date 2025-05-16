@@ -11,6 +11,7 @@ import categoriesRouter from "../routes/categoriesRouter.js";
 import petCategoriesRouter from "../routes/petCategoriesRouter.js";
 import orderRouter from "../routes/ordersRouter.js";
 import Order from "../model/Order.js";
+import petAdsRouter from "../routes/petAdsRouter.js";
 
 //db connect
 dbConnect();
@@ -78,6 +79,8 @@ app.use("/api/v1/products/", productsRouter);
 app.use("/api/v1/categories/", categoriesRouter);
 app.use("/api/v1/petCategories/", petCategoriesRouter);
 app.use("/api/v1/orders/", orderRouter);
+app.use("/api/v1/petAds/", petAdsRouter);
+
 
 //err middleware
 app.use(notFound);

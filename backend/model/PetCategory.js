@@ -23,6 +23,12 @@ const PetCategorySchema = new Schema(
         ref: "Product",
       },
     ],
+    petAds: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "PetAd",
+      },
+    ],
   },
   { timestamps: true }
 );
