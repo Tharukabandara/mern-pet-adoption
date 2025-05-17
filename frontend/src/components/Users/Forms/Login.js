@@ -1,42 +1,50 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUserAction } from "../../../redux/slices/users/usersSlice";
-import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
+import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
-  //dispatch
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const redirectPath = location.state?.from || "/customer-profile";
+
   const [formData, setFormData] = useState({
     email: "admin@gmail.com",
     password: "1234",
   });
-  //---Destructuring---
+
   const { email, password } = formData;
-  //---onchange handler----
+
   const onChangeHandler = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  //---onsubmit handler----
   const onSubmitHandler = (e) => {
     e.preventDefault();
     dispatch(loginUserAction({ email, password }));
   };
 
-  //get data from store
   const { error, loading, userInfo } = useSelector(
     (state) => state?.users?.userAuth
   );
 
-  //redirect
   useEffect(() => {
-    if (userInfo?.userFound?.isAdmin === true) {
-      window.location.href = "/admin";
+    if (userInfo?.userFound?.isAdmin) {
+      toast.success("Admin login successful");
+      navigate("/admin");
     } else if (userInfo?.userFound) {
-      window.location.href = "/customer-profile";
+      toast.success("Login successful");
+      navigate(redirectPath);
     }
-  }, [userInfo]);
+    if (error) {
+      toast.error(error?.message || "Login failed");
+    }
+  }, [userInfo, error, navigate, redirectPath]);
+
   return (
     <>
       <section className="py-20 bg-gray-100 overflow-x-hidden">
@@ -51,11 +59,11 @@ const Login = () => {
                 <p className="mb-10 font-semibold font-heading">
                   Happy to see you again
                 </p>
-                {/* err */}
-                {error && <ErrorMsg message={error?.message} />}
+
                 <form
                   className="flex flex-wrap -mx-4"
-                  onSubmit={onSubmitHandler}>
+                  onSubmit={onSubmitHandler}
+                >
                   <div className="w-full md:w-1/2 px-4 mb-8 md:mb-12">
                     <label>
                       <h4 className="mb-5 text-gray-400 uppercase font-bold font-heading">
@@ -86,12 +94,12 @@ const Login = () => {
                   </div>
 
                   <div className="w-full px-4">
-                    {loading ? ( 
-                    <LoadingComponent /> 
-                    ):(
+                    {loading ? (
+                      <LoadingComponent />
+                    ) : (
                       <button className="bg-blue-800 hover:bg-blue-900 text-white font-bold font-heading py-5 px-8 rounded-md uppercase">
-                      Login
-                    </button>
+                        Login
+                      </button>
                     )}
                   </div>
                 </form>
@@ -102,7 +110,8 @@ const Login = () => {
               style={{
                 backgroundImage:
                   'url("https://cdn.pixabay.com/photo/2017/03/29/04/47/high-heels-2184095_1280.jpg")',
-              }}></div>
+              }}
+            ></div>
           </div>
         </div>
       </section>

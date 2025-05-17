@@ -15,7 +15,7 @@ import AddCategory from "./components/Admin/Categories/AddCategory";
 import AllCategories from "./components/HomePage/AllCategories";
 import Product from "./components/Users/Products/Product";
 import ShoppingCart from "./components/Users/Products/ShoppingCart";
-import ProductsFilters from "./components/Users/Products/ProductsFilters";
+import Products from "./components/Users/Products/Products";
 import CustomerProfile from "./components/Users/Profile/CustomerProfile";
 import UpdateCategory from "./components/Admin/Categories/UpdateCategory";
 import OrdersList from "./components/Admin/Orders/OdersList";
@@ -27,7 +27,8 @@ import AddPetCategory from "./components/Admin/Categories/AddPetCategory";
 import PetAdsPage from "./components/Pet Ads/PetAdsPage";
 import CreatePetAd from "./components/Pet Ads/CreatePetAds";
 import SinglePetAd from "./components/Pet Ads/SinglePetAd";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   return (
@@ -60,7 +61,7 @@ const App = () => {
         {/* public links */}
         {/* Products */}
         <Route path="/" element={<HomePage />} />
-        <Route path="/products-filters" element={<ProductsFilters />} />
+        <Route path="/products" element={<Products />} />
         <Route path="/products/:id" element={<Product />} />
         <Route path="/all-categories" element={<AllCategories />} />
         {/* shopping cart */}
@@ -72,10 +73,10 @@ const App = () => {
         <Route path="/customer-profile" element={<CustomerProfile />} />
         {/* pet ads*/}
         <Route path="/pet-ads" element={<PetAdsPage />} />
-        {/* <Route path="/pet-ads/:id" element={<SinglePetAdPage />} /> */}
         <Route path="/create-pet-ad" element={<CreatePetAd />} />
         <Route path="/pet-ads/:id" element={<SinglePetAd />} />
       </Routes>
+      <ToastContainer position="bottom-right" autoClose={3000} />
     </BrowserRouter>
   );
 };

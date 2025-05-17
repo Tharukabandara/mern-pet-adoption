@@ -4,6 +4,7 @@ import productReducer from "../slices/products/productSlices";
 import categoryReducer from "../slices/categories/categoriesSlice";
 import petCategoryReducer from "../slices/categories/petCategoriesSlice";
 import petAdReducer from "../slices/petAds/petAdSlices";
+import cartReducer from "../slices/cart/cartSlice";
 
 //store
 
@@ -14,6 +15,7 @@ const store = configureStore({
         categories: categoryReducer,
         petCategories: petCategoryReducer,
         petAds: petAdReducer,
+        cart: cartReducer,
     },
 });
 
