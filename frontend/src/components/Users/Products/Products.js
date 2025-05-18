@@ -1,12 +1,8 @@
 import { Fragment, useEffect, useState } from "react";
 import {
-  Dialog,
   Disclosure,
-  Transition,
 } from "@headlessui/react";
 import {
-  XMarkIcon,
-  FunnelIcon,
   MinusIcon,
   PlusIcon,
 } from "@heroicons/react/20/solid";
@@ -44,9 +40,8 @@ export default function Products() {
     (state) => state?.products
   );
   const { categories } = useSelector((state) => state.categories);
-  const { petCategories: petCatState } = useSelector((state) => state.petCategories);
+  const { petCategories: petCategoryList } = useSelector((state) => state.petCategories);
   const { userAuth } = useSelector((state) => state.users);
-  const petCategoryList = petCatState?.petCategories || [];
 
   useEffect(() => {
     dispatch(fetchCategoriesAction());
@@ -262,12 +257,16 @@ export default function Products() {
                                 <span>Rs.{product?.price}</span>
                               </p>
                             </div>
-                            <Button
-                              variant="contained"
-                              onClick={() => handleAddToCart(product)}
-                            >
-                              Add to cart
-                            </Button>
+                              {product.totalQty > 0 ? (
+                                <Button
+                                  variant="contained"
+                                  onClick={() => handleAddToCart(product)}
+                                >
+                                  Add to cart
+                                </Button>
+                                ) : (
+                                <p className="text-red-500 text-sm mt-2">Out of Stock</p>
+                                )}
                           </div>
                         </div>
                       </div>

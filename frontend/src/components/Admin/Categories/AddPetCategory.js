@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createPetCategoryAction } from "../../../redux/slices/categories/petCategoriesSlice";
-import ErrorComponent from "../../ErrorMsg/ErrorMsg";
-import SuccessMsg from "../../SuccessMsg/SuccessMsg";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
-import { resetSuccessAction } from "../../../redux/slices/globalActions/globalActions";
+import { resetSuccessAction, resetErrAction } from "../../../redux/slices/globalActions/globalActions";
+import { toast } from "react-toastify";
 
 export default function AddPetCategory() {
   const [formData, setFormData] = useState({ name: "" });
   const [image, setImage] = useState(null);
   const dispatch = useDispatch();
 
-  const { loading, error, isAdded } = useSelector((state) => state.petCategories);
+  const { loading, error, isAdded, petCategory } = useSelector((state) => state.petCategories);
 
   const handleOnChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -22,24 +21,27 @@ export default function AddPetCategory() {
   };
 
   const handleOnSubmit = (e) => {
-  e.preventDefault();
-  const formDataObj = new FormData();
-  formDataObj.append("name", formData.name);
-  if (image) {
-    formDataObj.append("image", image);
-  }
-  dispatch(createPetCategoryAction(formDataObj));
-};
-
+    e.preventDefault();
+    const formDataObj = new FormData();
+    formDataObj.append("name", formData.name);
+    if (image) {
+      formDataObj.append("image", image);
+    }
+    dispatch(createPetCategoryAction({ name: formData.name, image }));
+    setFormData({ name: "" });
+    setImage(null);
+  };
 
   useEffect(() => {
-    if (isAdded) {
-      const timeout = setTimeout(() => {
-        dispatch(resetSuccessAction());
-      }, 3000);
-      return () => clearTimeout(timeout);
+    if (isAdded && petCategory?.message) {
+      toast.success(petCategory.message);
+      dispatch(resetSuccessAction());
     }
-  }, [dispatch, isAdded]);
+    if (error?.message) {
+      toast.error(error.message);
+      dispatch(resetErrAction());
+    }
+  }, [dispatch, isAdded, error, petCategory?.message]);
 
   return (
     <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -51,8 +53,6 @@ export default function AddPetCategory() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-lg">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          {error && <ErrorComponent message={error.message} />}
-          {isAdded && <SuccessMsg message="Pet category added successfully!" />}
           <form className="space-y-6" onSubmit={handleOnSubmit}>
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700">

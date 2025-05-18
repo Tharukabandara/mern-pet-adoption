@@ -191,8 +191,8 @@ export const updateProductCtrl = asyncHandler(async(req, res)=>{
         productCategory,  
         petCategory,
         user: req.userAuthId, 
-        price, 
-        totalQty,
+        price: Number(price), 
+        totalQty: Number(totalQty),
     },
     {
         new: true,

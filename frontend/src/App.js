@@ -17,7 +17,6 @@ import Product from "./components/Users/Products/Product";
 import ShoppingCart from "./components/Users/Products/ShoppingCart";
 import Products from "./components/Users/Products/Products";
 import CustomerProfile from "./components/Users/Profile/CustomerProfile";
-import UpdateCategory from "./components/Admin/Categories/UpdateCategory";
 import OrdersList from "./components/Admin/Orders/OdersList";
 import ManageOrders from "./components/Admin/Orders/ManageOrders";
 import Customers from "./components/Admin/Orders/Customers";
@@ -29,6 +28,7 @@ import CreatePetAd from "./components/Pet Ads/CreatePetAds";
 import SinglePetAd from "./components/Pet Ads/SinglePetAd";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ManagePetCategories from "./components/Admin/Categories/ManagePetCategories";
 
 const App = () => {
   return (
@@ -49,9 +49,9 @@ const App = () => {
           {/* Product Category */}
           <Route path="add-product-category" element={<AddCategory />} />
           <Route path="manage-product-category" element={<ManageCategories />} />
-          <Route path="edit-category/:id" element={<UpdateCategory />} />
           {/* pet category */}
           <Route path="add-pet-category" element={<AddPetCategory />} />
+          <Route path="manage-pet-categories" element={<ManagePetCategories />} />
 
           {/* Orders */}
           <Route path="manage-orders" element={<ManageOrders />} />

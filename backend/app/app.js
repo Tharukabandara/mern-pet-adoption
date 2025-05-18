@@ -77,7 +77,7 @@ app.use(express.json());
 app.use("/api/v1/users/", userRoutes);
 app.use("/api/v1/products/", productsRouter);
 app.use("/api/v1/categories/", categoriesRouter);
-app.use("/api/v1/petCategories/", petCategoriesRouter);
+app.use("/api/v1/pet-categories/", petCategoriesRouter);
 app.use("/api/v1/orders/", orderRouter);
 app.use("/api/v1/petAds/", petAdsRouter);
 

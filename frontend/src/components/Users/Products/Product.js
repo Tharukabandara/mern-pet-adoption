@@ -1,11 +1,12 @@
 import { useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import { fetchProductAction } from "../../../redux/slices/products/productSlices";
 import { addToCart } from "../../../redux/slices/cart/cartSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+// Utility function
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -22,6 +23,8 @@ export default function Product() {
   const { loading, error, product: { product } = {} } = useSelector((state) => state?.products);
   const { cartItems } = useSelector((state) => state?.cart);
   const { userAuth } = useSelector((state) => state.users);
+
+  const inStock = product?.totalQty > 0;
 
   const addToCartHandler = () => {
     dispatch(addToCart({ ...product, qty: 1 }));
@@ -51,6 +54,9 @@ export default function Product() {
                 <h1 className="text-xl font-medium text-gray-900">{product?.name}</h1>
                 <p className="text-xl font-medium text-gray-900">Rs. {product?.price}.00</p>
               </div>
+              <p className={`mt-2 text-sm font-medium ${inStock ? "text-green-600" : "text-red-600"}`}>
+                {inStock ? `In Stock (${product.totalQty} available)` : "Out of Stock"}
+              </p>
             </div>
 
             {/* Images */}
@@ -73,21 +79,24 @@ export default function Product() {
 
             {/* Add to cart + description */}
             <div className="mt-8 lg:col-span-5">
-              <button
-                onClick={addToCartHandler}
-                className="mt-8 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700"
-              >
-                Add to cart
-              </button>
-
-              {cartItems?.find((item) => item._id === product?._id) && (
+              {inStock && (
                 <button
-                  onClick={handleCheckout}
-                  className="mt-4 flex w-full items-center justify-center rounded-md border border-transparent bg-green-700 py-3 px-8 text-base font-medium text-white hover:bg-green-600"
+                  onClick={addToCartHandler}
+                  className="mt-8 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700"
                 >
-                  Proceed to Checkout
+                  Add to cart
                 </button>
               )}
+
+              {inStock &&
+                cartItems?.find((item) => item._id === product?._id) && (
+                  <button
+                    onClick={handleCheckout}
+                    className="mt-4 flex w-full items-center justify-center rounded-md border border-transparent bg-green-700 py-3 px-8 text-base font-medium text-white hover:bg-green-600"
+                  >
+                    Proceed to Checkout
+                  </button>
+                )}
 
               <div className="mt-10">
                 <h2 className="text-sm font-medium text-gray-900">Description</h2>

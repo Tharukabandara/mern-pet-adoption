@@ -2,27 +2,25 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
-  fetchCategoriesAction,
-  deleteCategoryAction,
-} from "../../../redux/slices/categories/categoriesSlice";
+  fetchPetCategoriesAction,
+  deletePetCategoryAction,
+} from "../../../redux/slices/categories/petCategoriesSlice";
 import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import NoDataFound from "../../NoDataFound/NoDataFound";
 
-export default function ManageCategories() {
+export default function ManagePetCategories() {
   const dispatch = useDispatch();
 
-  // Select data from redux
-  const { categories, loading, error } = useSelector((state) => state.categories);
+  const { petCategories, loading, error } = useSelector((state) => state.petCategories);
 
   useEffect(() => {
-    dispatch(fetchCategoriesAction());
+    dispatch(fetchPetCategoriesAction());
   }, [dispatch]);
 
-  // Delete category handler
-  const deleteCategoryHandler = (id) => {
-    if (window.confirm("Are you sure you want to delete this category?")) {
-      dispatch(deleteCategoryAction(id));
+  const deletePetCategoryHandler = (id) => {
+    if (window.confirm("Are you sure you want to delete this pet category?")) {
+      dispatch(deletePetCategoryAction(id));
     }
   };
 
@@ -30,16 +28,16 @@ export default function ManageCategories() {
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h1 className="text-xl font-semibold text-gray-900">All Categories</h1>
+          <h1 className="text-xl font-semibold text-gray-900">All Pet Categories</h1>
           <p className="mt-2 text-sm text-gray-700">
-            List of all product categories.
+            List of all pet categories in your platform.
           </p>
         </div>
         <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
           <Link
-            to="/admin/add-product-category"
+            to="/admin/add-pet-category"
             className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700">
-            Add New Product Category
+            Add New Pet Category
           </Link>
         </div>
       </div>
@@ -48,7 +46,7 @@ export default function ManageCategories() {
         <LoadingComponent />
       ) : error ? (
         <ErrorMsg message={error?.message} />
-      ) : categories?.length <= 0 ? (
+      ) : petCategories?.length <= 0 ? (
         <NoDataFound />
       ) : (
         <div className="mt-8 flex flex-col">
@@ -65,7 +63,7 @@ export default function ManageCategories() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
-                    {categories?.categories?.map((category) => (
+                    {petCategories?.map((category) => (
                       <tr key={category?._id}>
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
                           <div className="flex items-center">
@@ -80,7 +78,7 @@ export default function ManageCategories() {
                           {new Date(category?.createdAt).toLocaleDateString()}
                         </td>
                         <td className="px-3 py-4 text-sm text-red-600 hover:text-red-900">
-                          <button onClick={() => deleteCategoryHandler(category?._id)}>
+                          <button onClick={() => deletePetCategoryHandler(category?._id)}>
                             Delete
                           </button>
                         </td>

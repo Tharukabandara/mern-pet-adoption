@@ -96,7 +96,7 @@ export default function PetAdsPage() {
           {/* Pet Category Filter */}
           <div>
             <h3 className="text-lg font-medium">Pet Categories</h3>
-            {petCategories?.petCategories?.map((cat) => (
+            {petCategories?.map((cat) => (
               <div key={cat._id}>
                 <input
                   type="radio"

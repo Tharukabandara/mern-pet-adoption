@@ -6,17 +6,27 @@ import {
   UserIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "./Logo.png";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUserAction } from "../../redux/slices/users/usersSlice";
+import { toast } from "react-toastify";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const categoriesToDisplay = [];
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { userInfo } = useSelector((state) => state.users.userAuth || {});
   const { cartItems } = useSelector((state) => state.cart);
   const isLoggedIn = !!userInfo?.userFound;
+  const isAdmin = userInfo?.userFound?.isAdmin;
+
+  const handleLogout = () => {
+  dispatch(logoutUserAction());
+  toast.success("Successfully logged out.");
+  navigate("/login");
+};
 
   return (
     <div className="bg-white">
@@ -52,31 +62,32 @@ export default function Navbar() {
                     className="-m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    <span className="sr-only">Close menu</span>
-                    <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                    <XMarkIcon className="h-6 w-6" />
                   </button>
                 </div>
 
                 <div className="space-y-6 border-t border-gray-200 py-6 px-4">
-                  <Link to="/" className="block text-sm font-medium text-gray-700">
-                    Home
-                  </Link>
-                  <Link to="/pet-ads" className="block text-sm font-medium text-gray-700">
-                    Pet Ads
-                  </Link>
-                  <Link to="/products" className="block text-sm font-medium text-gray-700">
-                    Pet Accessories
-                  </Link>
+                  <Link to="/" className="block text-sm font-medium text-gray-700">Home</Link>
+                  <Link to="/pet-ads" className="block text-sm font-medium text-gray-700">Pet Ads</Link>
+                  <Link to="/products" className="block text-sm font-medium text-gray-700">Pet Accessories</Link>
+                  {isAdmin && (
+                    <Link to="/admin" className="block text-sm font-medium text-indigo-600">Admin Dashboard</Link>
+                  )}
                 </div>
 
-                {!isLoggedIn && (
+                {!isLoggedIn ? (
                   <div className="space-y-6 border-t border-gray-200 py-6 px-4">
-                    <Link to="/register" className="block text-sm font-medium text-gray-900">
-                      Create an account
-                    </Link>
-                    <Link to="/login" className="block text-sm font-medium text-gray-900">
-                      Sign in
-                    </Link>
+                    <Link to="/register" className="block text-sm font-medium text-gray-900">Create an account</Link>
+                    <Link to="/login" className="block text-sm font-medium text-gray-900">Sign in</Link>
+                  </div>
+                ) : (
+                  <div className="space-y-6 border-t border-gray-200 py-6 px-4">
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full text-left text-sm font-medium text-red-600 hover:text-red-800"
+                    >
+                      Logout
+                    </button>
                   </div>
                 )}
               </Dialog.Panel>
@@ -85,46 +96,49 @@ export default function Navbar() {
         </Dialog>
       </Transition.Root>
 
-      {/* Top Banner */}
+      {/* Top Nav */}
       <header className="relative z-10">
         <nav aria-label="Top">
           <div className="bg-[#7f6363]">
             <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-              <p className="flex-1 text-center text-sm font-medium text-white lg:flex-none">
-                Welcome to Paw Mart
-              </p>
+              <p className="flex-1 text-center text-sm font-medium text-white">Welcome to Paw Mart</p>
               <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                {!isLoggedIn && (
+                {!isLoggedIn ? (
                   <>
-                    <Link to="/register" className="text-sm font-medium text-white hover:text-gray-100">
-                      Create an account
-                    </Link>
+                    <Link to="/register" className="text-sm font-medium text-white hover:text-gray-100">Create an account</Link>
                     <span className="h-6 w-px bg-gray-600" />
-                    <Link to="/login" className="text-sm font-medium text-white hover:text-gray-100">
-                      Sign in
-                    </Link>
+                    <Link to="/login" className="text-sm font-medium text-white hover:text-gray-100">Sign in</Link>
                   </>
+                ) : (
+                  <button onClick={handleLogout} className="text-sm font-medium text-white hover:text-red-300">
+                    Logout
+                  </button>
                 )}
               </div>
             </div>
           </div>
 
-          {/* Desktop Nav */}
+          {/* Main Nav */}
           <div className="bg-white border-b border-gray-200">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="flex h-20 items-center justify-between">
+                {/* Logo */}
                 <div className="hidden lg:flex lg:items-center">
                   <Link to="/">
                     <img className="h-32 pt-2 w-auto" src={logo} alt="Paw Mart" />
                   </Link>
                 </div>
 
+                {/* Center Menu */}
                 <div className="hidden h-full lg:flex">
                   <Popover.Group className="ml-8">
                     <div className="flex h-full items-center space-x-8">
                       <Link to="/" className="text-sm font-medium text-gray-700 hover:text-gray-800">Home</Link>
                       <Link to="/pet-ads" className="text-sm font-medium text-gray-700 hover:text-gray-800">Pet Ads</Link>
                       <Link to="/products" className="text-sm font-medium text-gray-700 hover:text-gray-800">Pet Accessories</Link>
+                      {isAdmin && (
+                        <Link to="/admin" className="text-sm font-medium text-indigo-700 hover:text-indigo-900">Admin Dashboard</Link>
+                      )}
                     </div>
                   </Popover.Group>
                 </div>
@@ -140,14 +154,14 @@ export default function Navbar() {
                   </button>
                 </div>
 
-                {/* Logo (Mobile) */}
+                {/* Mobile Logo */}
                 <Link to="/" className="lg:hidden">
                   <img className="h-32 mt-2 w-auto" src={logo} alt="Paw Mart" />
                 </Link>
 
                 {/* Right Icons */}
                 <div className="flex flex-1 items-center justify-end">
-                  <div className="flex items-center lg:ml-8 space-x-4">
+                  <div className="flex items-center space-x-4">
                     {isLoggedIn && (
                       <Link to="/customer-profile" className="-m-2 p-2 text-gray-400 hover:text-gray-500">
                         <UserIcon className="h-6 w-6" />

@@ -26,7 +26,7 @@ const HomeCategories = () => {
             {categoriesToShow.map((category) => (
               <Link
                 key={category.name}
-                to={`/products-filters?category=${encodeURIComponent(category.name)}`}
+                to={`/products?category=${encodeURIComponent(category.name)}`}
                 className="relative flex h-80 w-56 flex-col overflow-hidden rounded-lg p-6 hover:opacity-75 xl:w-auto"
               >
                 <span aria-hidden="true" className="absolute inset-0">

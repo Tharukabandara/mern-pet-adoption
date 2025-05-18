@@ -35,7 +35,7 @@ const AllCategories = () => {
               {categoriesArray.map((category) => (
                 <Link
                   key={category._id}
-                  to={`/products-filters?category=${encodeURIComponent(category.name)}`}
+                  to={`/products?category=${encodeURIComponent(category.name)}`}
                   className="relative flex flex-col h-64 rounded-lg overflow-hidden shadow hover:opacity-80"
                 >
                   <img

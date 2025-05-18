@@ -10,7 +10,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const redirectPath = location.state?.from || "/customer-profile";
+  const redirectPath = location.state?.from || "/";
 
   const [formData, setFormData] = useState({
     email: "admin@gmail.com",
@@ -35,7 +35,7 @@ const Login = () => {
   useEffect(() => {
     if (userInfo?.userFound?.isAdmin) {
       toast.success("Admin login successful");
-      navigate("/admin");
+      navigate("/");
     } else if (userInfo?.userFound) {
       toast.success("Login successful");
       navigate(redirectPath);

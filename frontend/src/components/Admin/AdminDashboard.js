@@ -124,8 +124,8 @@ const CategoryLinks = [
 const petCategoryLinks = [
   { name: "Add Pet Category", href: "add-pet-category", icon: CogIcon },
   {
-    name: "All Pet Categories",
-    href: "all-pet-categories",
+    name: "Manage Pet Categories",
+    href: "manage-pet-categories",
     icon: QuestionMarkCircleIcon,
   },
 ];
