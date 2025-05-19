@@ -42,7 +42,7 @@ export default function Example() {
         </div>
 
         {/* CTA Banner */}
-        <div className="bg-indigo-600 text-white text-center py-8" data-aos="zoom-in">
+        <div className="bg-indigo-800 text-white text-center py-12" data-aos="zoom-in">
           <h3 className="text-2xl font-bold">Join the Pet Community Today</h3>
           <p className="mt-2">Find your perfect companion or sell your pet accessories with ease.</p>
           <Link

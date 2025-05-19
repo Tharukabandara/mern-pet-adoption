@@ -4,13 +4,12 @@ import {
   updateQuantity,
   clearCart,
 } from "../../../redux/slices/cart/cartSlice";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export default function ShoppingCart() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const { cartItems } = useSelector((state) => state.cart);
   const { userAuth } = useSelector((state) => state.users);
@@ -40,12 +39,22 @@ export default function ShoppingCart() {
         <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
           Shopping Cart
         </h1>
+
         <div className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
+          {/* Cart Items Section */}
           <section aria-labelledby="cart-heading" className="lg:col-span-7">
             <h2 id="cart-heading" className="sr-only">Items in your shopping cart</h2>
 
             {cartItems.length === 0 ? (
-              <p className="text-gray-600">Your cart is empty.</p>
+              <div className="text-center text-gray-600 mt-10">
+                <p>Your cart is empty.</p>
+                <Link
+                  to="/products"
+                  className="text-indigo-600 font-medium hover:underline mt-2 inline-block"
+                >
+                  Shop Pet Accessories →
+                </Link>
+              </div>
             ) : (
               <ul className="divide-y divide-gray-200 border-t border-b border-gray-200">
                 {cartItems.map((product) => (
@@ -71,7 +80,6 @@ export default function ShoppingCart() {
                         </div>
 
                         <div className="mt-4 sm:mt-0 sm:pr-9">
-                          <label className="sr-only">Quantity</label>
                           <select
                             onChange={(e) =>
                               changeOrderItemQtyHandler(product._id, e.target.value)
@@ -111,34 +119,34 @@ export default function ShoppingCart() {
             )}
           </section>
 
-          {/* Order Summary */}
-          <section className="mt-16 rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8">
-            <h2 className="text-lg font-medium text-gray-900">Order summary</h2>
-            <dl className="mt-6 space-y-4">
-              <div className="flex items-center justify-between">
-                <dt className="text-sm text-gray-600">Subtotal</dt>
-                <dd className="text-sm font-medium text-gray-900">
-                  Rs. {subtotal.toFixed(2)}
-                </dd>
-              </div>
-              <div className="flex items-center justify-between border-t border-gray-200 pt-4">
-                <dt className="text-base font-medium text-gray-900">Order total</dt>
-                <dd className="text-base font-medium text-gray-900">
-                  Rs. {subtotal.toFixed(2)}
-                </dd>
-              </div>
-            </dl>
+          {/* Order Summary Section */}
+          {cartItems.length > 0 && (
+            <section className="mt-16 rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8">
+              <h2 className="text-lg font-medium text-gray-900">Order summary</h2>
+              <dl className="mt-6 space-y-4">
+                <div className="flex items-center justify-between">
+                  <dt className="text-sm text-gray-600">Subtotal</dt>
+                  <dd className="text-sm font-medium text-gray-900">
+                    Rs. {subtotal.toFixed(2)}
+                  </dd>
+                </div>
+                <div className="flex items-center justify-between border-t border-gray-200 pt-4">
+                  <dt className="text-base font-medium text-gray-900">Order total</dt>
+                  <dd className="text-base font-medium text-gray-900">
+                    Rs. {subtotal.toFixed(2)}
+                  </dd>
+                </div>
+              </dl>
 
-            <div className="mt-6">
-              <button
-                onClick={handleCheckout}
-                className="w-full inline-block rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-              >
-                Proceed to Checkout
-              </button>
-            </div>
+              <div className="mt-6">
+                <button
+                  onClick={handleCheckout}
+                  className="w-full inline-block rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                >
+                  Proceed to Checkout
+                </button>
+              </div>
 
-            {cartItems.length > 0 && (
               <div className="mt-4 text-right">
                 <button
                   onClick={() => dispatch(clearCart())}
@@ -147,8 +155,8 @@ export default function ShoppingCart() {
                   Clear Cart
                 </button>
               </div>
-            )}
-          </section>
+            </section>
+          )}
         </div>
       </div>
     </div>

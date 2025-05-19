@@ -19,7 +19,7 @@ const initialState = {
   },
 };
 
-// Register action
+// Register
 export const registerUserAction = createAsyncThunk(
   "users/register",
   async ({ email, password, fullname }, { rejectWithValue }) => {
@@ -37,7 +37,7 @@ export const registerUserAction = createAsyncThunk(
   }
 );
 
-// Login action
+// Login
 export const loginUserAction = createAsyncThunk(
   "users/login",
   async ({ email, password }, { rejectWithValue }) => {
@@ -54,11 +54,74 @@ export const loginUserAction = createAsyncThunk(
   }
 );
 
-// Logout thunk (not async)
+// Logout
 export const logoutUserAction = () => (dispatch) => {
   localStorage.removeItem("userInfo");
   dispatch(logout());
 };
+
+// Get user profile
+export const getUserProfileAction = createAsyncThunk(
+  "user/profile",
+  async (_, { rejectWithValue, getState }) => {
+    try {
+      const token = getState()?.users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.get(`${baseURL}/users/profile`, config);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+// Update shipping address (fixed)
+export const updateShippingAddressAction = createAsyncThunk(
+  "users/update-shipping-address",
+  async (
+    {
+      firstName,
+      lastName,
+      address,
+      city,
+      postalCode,
+      province,
+      phone,
+      country,
+    },
+    { rejectWithValue, getState }
+  ) => {
+    try {
+      const token = getState()?.users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `${baseURL}/users/update/shipping`,
+        {
+          firstName,
+          lastName,
+          address,
+          city,
+          postalCode,
+          province,
+          phone,
+          country,
+        },
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
 
 // Slice
 const usersSlice = createSlice({
@@ -67,6 +130,7 @@ const usersSlice = createSlice({
   reducers: {
     logout: (state) => {
       state.userAuth.userInfo = null;
+      localStorage.removeItem("userInfo");
     },
   },
   extraReducers: (builder) => {
@@ -96,7 +160,42 @@ const usersSlice = createSlice({
       state.loading = false;
     });
 
-    // Reset
+    // Get profile
+    builder.addCase(getUserProfileAction.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getUserProfileAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.profile = action.payload;
+
+      if (state.userAuth.userInfo) {
+        state.userAuth.userInfo.shippingAddress = action.payload?.user?.shippingAddress;
+        state.userAuth.userInfo.hasShippingAddress = action.payload?.user?.hasShippingAddress;
+      }
+    });
+    builder.addCase(getUserProfileAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    });
+
+    // Update shipping address
+    builder.addCase(updateShippingAddressAction.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(updateShippingAddressAction.fulfilled, (state, action) => {
+      state.loading = false;
+      const updatedUser = action.payload?.user;
+      if (updatedUser && state.userAuth.userInfo) {
+        state.userAuth.userInfo.shippingAddress = updatedUser.shippingAddress;
+        state.userAuth.userInfo.hasShippingAddress = updatedUser.hasShippingAddress;
+      }
+      state.profile = action.payload;
+    });
+    builder.addCase(updateShippingAddressAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    });
+
     builder.addCase(resetSuccessAction, (state) => {
       state.isAdded = false;
     });
@@ -106,6 +205,5 @@ const usersSlice = createSlice({
   },
 });
 
-// Export actions and reducer
 export const { logout } = usersSlice.actions;
 export default usersSlice.reducer;

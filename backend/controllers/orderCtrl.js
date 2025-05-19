@@ -127,7 +127,7 @@ export const updateOrderCtrl = asyncHandler(async (req, res) => {
   res.status(200).json({
     success: true,
     message: "Order updated",
-    updatedOrder,
+    order: updatedOrder,
   }); 
 });
 
