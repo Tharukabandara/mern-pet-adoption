@@ -55,7 +55,7 @@ export default function Product() {
                 <p className="text-xl font-medium text-gray-900">Rs. {product?.price}.00</p>
               </div>
               <p className={`mt-2 text-sm font-medium ${inStock ? "text-green-600" : "text-red-600"}`}>
-                {inStock ? `In Stock (${product.totalQty} available)` : "Out of Stock"}
+                {inStock ? `In Stock (${product.qtyLeft} available)` : "Out of Stock"}
               </p>
             </div>
 

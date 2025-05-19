@@ -19,7 +19,7 @@ export default function UpdateProduct() {
 
   const { product, isUpdated, error, loading } = useSelector((state) => state.products);
   const { categories } = useSelector((state) => state.categories.categories || {});
-  const { petCategories } = useSelector((state) => state.petCategories.petCategories || {});
+  const  petCategories  = useSelector((state) => state.petCategories.petCategories || {});
 
   const [formData, setFormData] = useState({
     name: "",

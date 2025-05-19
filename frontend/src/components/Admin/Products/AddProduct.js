@@ -32,7 +32,7 @@ export default function AddProduct() {
   }, [dispatch]);
 
   const { categories } = useSelector((state) => state?.categories?.categories);
-  const { petCategories } = useSelector((state) => state?.petCategories?.petCategories);
+  const petCategories = useSelector((state) => state?.petCategories?.petCategories);
 
   const [formData, setFormData] = useState({
     name: "",
