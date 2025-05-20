@@ -1,14 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserProfileAction } from "../../../redux/slices/users/usersSlice";
 import CustomerDetails from "./CustomerDetails";
-import ShippingAddressDetails from "./ShippingAddressDetails";
+import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/20/solid";
 
 export default function CustomerProfile() {
   const dispatch = useDispatch();
   const { profile, loading, error } = useSelector((state) => state.users);
+  const [sortNewestFirst, setSortNewestFirst] = useState(true);
 
-  // Only fetch if not already loaded
   const hasFetchedProfile = !!profile?.user?._id;
 
   useEffect(() => {
@@ -18,132 +18,107 @@ export default function CustomerProfile() {
   }, [dispatch, hasFetchedProfile]);
 
   const user = profile?.user;
-  const orders = user?.orders || [];
-  const shippingAddress = user?.shippingAddress;
+  const orders = [...(user?.orders || [])].sort((a, b) => {
+    return sortNewestFirst
+      ? new Date(b.createdAt) - new Date(a.createdAt)
+      : new Date(a.createdAt) - new Date(b.createdAt);
+  });
 
   return (
-    <>
+    <div className="bg-gray-100 min-h-screen py-10 px-4">
       {loading ? (
-        <h2>Loading...</h2>
+        <h2 className="text-center text-lg">Loading...</h2>
       ) : error ? (
-        <h2>{error.message || "Something went wrong"}</h2>
+        <h2 className="text-center text-red-500">{error.message || "Something went wrong"}</h2>
       ) : !user ? (
-        <h2>Loading profile...</h2>
+        <h2 className="text-center">Loading profile...</h2>
       ) : (
         <>
-          <div className="flex flex-wrap -mx-3 -mb-3 md:mb-0">
-            <div className="w-full md:w-1/3 px-3 mb-3 md:mb-0" />
-            <div className="w-full md:w-1/2 px-3 mb-3 md:mb-0">
+          <div className="flex justify-center mb-10">
+            <div className="w-full max-w-3xl">
               <CustomerDetails
                 email={user.email}
                 dateJoined={new Date(user.createdAt).toDateString()}
                 fullName={user.fullname}
               />
             </div>
-            <div className="w-full md:w-1/3 px-3 mb-3 md:mb-0" />
           </div>
 
-          {orders.length === 0 ? (
-            <h2 className="text-center mt-10">No Order Found</h2>
-          ) : (
-            orders.map((order) => (
-              <div key={order._id || order.orderNumber}>
-                <div className="bg-gray-50">
-                  <div className="mx-auto max-w-2xl pt-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-                    <div className="space-y-2 px-4 sm:flex sm:items-baseline sm:justify-between sm:space-y-0 sm:px-0">
-                      <div className="flex sm:items-baseline sm:space-x-4">
-                        <dl className="grid flex-1 grid-cols-2 gap-x-6 text-sm sm:col-span-3 sm:grid-cols-3 lg:col-span-2">
-                          <div>
-                            <dt className="font-medium text-gray-900">Order number</dt>
-                            <dd className="mt-1 text-gray-500">{order?.orderNumber}</dd>
-                          </div>
-                          <div className="hidden sm:block">
-                            <dt className="font-medium text-gray-900">Date placed</dt>
-                            <dd className="mt-1 text-gray-500">
-                              <time>{new Date(order?.createdAt).toDateString()}</time>
-                            </dd>
-                          </div>
-                          <div>
-                            <dt className="font-medium text-gray-900">Total amount</dt>
-                            <dd className="mt-1 font-medium text-gray-900">Rs.{order?.totalPrice}</dd>
-                          </div>
-                        </dl>
-                      </div>
+          <div className="max-w-5xl mx-auto bg-white rounded-lg shadow p-6">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold text-gray-800">Your Orders</h2>
+              <div>
+                <label className="mr-2 text-sm text-gray-600">Sort:</label>
+                <select
+                  value={sortNewestFirst ? "newest" : "oldest"}
+                  onChange={(e) => setSortNewestFirst(e.target.value === "newest")}
+                  className="border rounded px-2 py-1 text-sm"
+                >
+                  <option value="newest">Newest First</option>
+                  <option value="oldest">Oldest First</option>
+                </select>
+              </div>
+            </div>
 
-                      <p className="text-sm text-gray-600">
-                        Status:{" "}
-                        <time className="font-medium text-gray-900">{order?.status}</time>
-                      </p>
+            {orders.length === 0 ? (
+              <h2 className="text-center mt-10 text-gray-500">No Order Found</h2>
+            ) : (
+              <div className="space-y-8 divide-y divide-gray-200">
+                {orders.map((order) => (
+                  <div key={order._id || order.orderNumber} className="pt-6">
+                    <div className="flex justify-between items-center">
                       <div>
-                        <dt className="font-medium text-gray-900">Payment Method</dt>
-                        <dd className="mt-1 font-medium text-gray-900">{order?.paymentMethod}</dd>
+                        <p className="text-gray-800 font-medium">Order #{order?.orderNumber}</p>
+                        <p className="text-sm text-gray-500">
+                          Placed on {new Date(order?.createdAt).toLocaleDateString()}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm text-gray-600">Status: <span className="font-semibold">{order?.status}</span></p>
+                        <p className="text-sm text-gray-600">Payment: <span className="font-semibold">{order?.paymentMethod}</span></p>
                       </div>
                     </div>
 
-                    {/* Products */}
-                    <div className="mt-6">
-                      <h2 className="sr-only">Products purchased</h2>
-                      <div className="space-y-8">
-                        {order?.orderItems?.map((product) => (
-                          <div
-                            key={product._id || product.id}
-                            className="border-t border-b border-gray-200 bg-white shadow-sm sm:rounded-lg sm:border"
-                          >
-                            <div className="py-6 px-4 sm:px-6 lg:grid lg:grid-cols-12 lg:gap-x-8 lg:p-8">
-                              <div className="sm:flex lg:col-span-7">
-                                <div className="aspect-w-1 aspect-h-1 w-full flex-shrink-0 overflow-hidden rounded-lg sm:aspect-none sm:h-40 sm:w-40">
-                                  <img
-                                    src={product.images?.[0] || ""}
-                                    alt={product.name}
-                                    className="h-full w-full object-cover object-center sm:h-full sm:w-full"
-                                  />
-                                </div>
-                                <div className="mt-6 sm:mt-0 sm:ml-6">
-                                  <h3 className="text-base font-medium text-gray-900">
-                                    <a href="#">{product.name}</a>
-                                  </h3>
-                                  <p className="mt-2 text-sm font-medium text-gray-900">
-                                    Rs.{product.price}
-                                  </p>
-                                  <p className="mt-3 text-sm text-gray-500">{product.description}</p>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div className="flex items-center mb-3">
-                              <svg
-                                className="h-5 w-5 text-red-500"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth="2"
-                                  d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                ></path>
-                              </svg>
-                              <p className="ml-2 text-sm font-medium text-gray-500">
-                                Payment Status: {order.paymentStatus}
-                              </p>
-                            </div>
+                    <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {order?.orderItems?.map((product) => (
+                        <div
+                          key={product._id || product.id}
+                          className="flex items-start gap-4 bg-gray-50 p-4 rounded shadow-sm"
+                        >
+                          <img
+                            src={product.images?.[0] || "/placeholder.png"}
+                            alt={product.name}
+                            className="w-24 h-24 object-cover rounded"
+                          />
+                          <div>
+                            <h3 className="text-base font-medium text-gray-900">{product.name}</h3>
+                            <p className="text-sm text-gray-500 mt-1">{product.description}</p>
+                            <p className="text-sm font-semibold text-gray-800 mt-2">Rs.{product.price}</p>
                           </div>
-                        ))}
-                      </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="mt-4 text-sm text-gray-600 flex items-center">
+                      {order.paymentStatus === "paid" ? (
+                        <>
+                          <CheckCircleIcon className="h-5 w-5 text-green-600 mr-1" />
+                          <span className="text-green-600 font-semibold">Paid</span>
+                        </>
+                      ) : (
+                        <>
+                          <XCircleIcon className="h-5 w-5 text-red-500 mr-1" />
+                          <span className="text-red-500 font-semibold">Not Paid</span>
+                        </>
+                      )}
                     </div>
                   </div>
-                </div>
-
-                {shippingAddress && (
-                  <ShippingAddressDetails shippingAddress={shippingAddress} />
-                )}
+                ))}
               </div>
-            ))
-          )}
+            )}
+          </div>
         </>
       )}
-    </>
+    </div>
   );
 }

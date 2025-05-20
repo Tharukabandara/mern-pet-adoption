@@ -143,6 +143,13 @@ export const getPetAdCtrl = asyncHandler(async(req, res)=>{
     });
 });
 
+// GET /petAds/my-ads
+export const getMyPetAdsCtrl = asyncHandler(async (req, res) => {
+  const userId = req.userAuthId;
+  const myAds = await PetAd.find({ user: userId }).sort({ createdAt: -1 });
+  res.json({ petAds: myAds });
+});
+
 
 //@desc     Delete pet ad
 //@route    DELETE /api/v1/petAds/:id/delete

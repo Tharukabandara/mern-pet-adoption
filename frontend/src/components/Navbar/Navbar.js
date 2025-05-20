@@ -1,11 +1,17 @@
 import { Fragment, useState } from "react";
-import { Dialog, Popover, Transition } from "@headlessui/react";
+import { Dialog, Menu, Popover, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
   ShoppingCartIcon,
   UserIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import {
+  ArrowRightOnRectangleIcon,
+  UserCircleIcon,
+  RectangleStackIcon,
+  MapPinIcon,
+} from "@heroicons/react/24/solid";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "./Logo.png";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,14 +29,14 @@ export default function Navbar() {
   const isAdmin = userInfo?.userFound?.isAdmin;
 
   const handleLogout = () => {
-  dispatch(logoutUserAction());
-  toast.success("Successfully logged out.");
-  navigate("/login");
-};
+    dispatch(logoutUserAction());
+    toast.success("Successfully logged out.");
+    navigate("/login");
+  };
 
   return (
-    <div className="bg-white">
-      {/* Mobile menu */}
+    <div className="bg-white shadow">
+      {/* Mobile Menu */}
       <Transition.Root show={mobileMenuOpen} as={Fragment}>
         <Dialog as="div" className="relative z-40 lg:hidden" onClose={setMobileMenuOpen}>
           <Transition.Child
@@ -75,105 +81,174 @@ export default function Navbar() {
                   )}
                 </div>
 
-                {!isLoggedIn ? (
-                  <div className="space-y-6 border-t border-gray-200 py-6 px-4">
-                    <Link to="/register" className="block text-sm font-medium text-gray-900">Create an account</Link>
-                    <Link to="/login" className="block text-sm font-medium text-gray-900">Sign in</Link>
-                  </div>
-                ) : (
-                  <div className="space-y-6 border-t border-gray-200 py-6 px-4">
-                    <button
-                      onClick={handleLogout}
-                      className="block w-full text-left text-sm font-medium text-red-600 hover:text-red-800"
-                    >
-                      Logout
-                    </button>
-                  </div>
-                )}
+                <div className="border-t border-gray-200 py-6 px-4 space-y-4">
+                  {!isLoggedIn ? (
+                    <>
+                      <Link to="/register" className="flex items-center gap-2 text-sm font-medium text-gray-900">
+                        <UserCircleIcon className="h-5 w-5" />
+                        Register
+                      </Link>
+                      <Link to="/login" className="flex items-center gap-2 text-sm font-medium text-gray-900">
+                        <ArrowRightOnRectangleIcon className="h-5 w-5" />
+                        Sign In
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <Link to="/customer-profile" className="flex items-center gap-2 text-sm font-medium text-gray-900">
+                        <UserIcon className="h-5 w-5" />
+                        Profile
+                      </Link>
+                      <Link to="/my-ads" className="flex items-center gap-2 text-sm font-medium text-gray-900">
+                        <RectangleStackIcon className="h-5 w-5" />
+                        My Ads
+                      </Link>
+                      <Link to="/shipping-address" className="flex items-center gap-2 text-sm font-medium text-gray-900">
+                        <MapPinIcon className="h-5 w-5" />
+                        Shipping Address
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="flex items-center gap-2 text-sm font-medium text-red-600 hover:text-red-800"
+                      >
+                        <ArrowRightOnRectangleIcon className="h-5 w-5" />
+                        Logout
+                      </button>
+                    </>
+                  )}
+                </div>
               </Dialog.Panel>
             </Transition.Child>
           </div>
         </Dialog>
       </Transition.Root>
 
-      {/* Top Nav */}
+      {/* Main Nav */}
       <header className="relative z-10">
         <nav aria-label="Top">
-          <div className="bg-[#7f6363]">
-            <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-              <p className="flex-1 text-center text-sm font-medium text-white">Welcome to Paw Mart</p>
-              <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                {!isLoggedIn ? (
-                  <>
-                    <Link to="/register" className="text-sm font-medium text-white hover:text-gray-100">Create an account</Link>
-                    <span className="h-6 w-px bg-gray-600" />
-                    <Link to="/login" className="text-sm font-medium text-white hover:text-gray-100">Sign in</Link>
-                  </>
-                ) : (
-                  <button onClick={handleLogout} className="text-sm font-medium text-white hover:text-red-300">
-                    Logout
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Main Nav */}
           <div className="bg-white border-b border-gray-200">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="flex h-20 items-center justify-between">
                 {/* Logo */}
-                <div className="hidden lg:flex lg:items-center">
+                <div className="flex-shrink-0">
                   <Link to="/">
-                    <img className="h-32 pt-2 w-auto" src={logo} alt="Paw Mart" />
+                    <img className="h-20 w-auto" src={logo} alt="Paw Mart" />
                   </Link>
                 </div>
 
-                {/* Center Menu */}
-                <div className="hidden h-full lg:flex">
-                  <Popover.Group className="ml-8">
-                    <div className="flex h-full items-center space-x-8">
-                      <Link to="/" className="text-sm font-medium text-gray-700 hover:text-gray-800">Home</Link>
-                      <Link to="/pet-ads" className="text-sm font-medium text-gray-700 hover:text-gray-800">Pet Ads</Link>
-                      <Link to="/products" className="text-sm font-medium text-gray-700 hover:text-gray-800">Pet Accessories</Link>
-                      {isAdmin && (
-                        <Link to="/admin" className="text-sm font-medium text-indigo-700 hover:text-indigo-900">Admin Dashboard</Link>
-                      )}
-                    </div>
-                  </Popover.Group>
+                {/* Center Links */}
+                <div className="hidden lg:flex lg:gap-8">
+                  <Link to="/" className="text-sm font-medium text-gray-700 hover:text-gray-900">Home</Link>
+                  <Link to="/pet-ads" className="text-sm font-medium text-gray-700 hover:text-gray-900">Pet Advertisement </Link>
+                  <Link to="/products" className="text-sm font-medium text-gray-700 hover:text-gray-900">Pet Accessories</Link>
+                  {isAdmin && (
+                    <Link to="/admin" className="text-sm font-medium text-indigo-700 hover:text-indigo-900">Admin Dashboard</Link>
+                  )}
                 </div>
 
                 {/* Mobile Menu Button */}
-                <div className="flex flex-1 items-center lg:hidden">
+                <div className="flex lg:hidden">
                   <button
                     type="button"
-                    className="-ml-2 rounded-md bg-white p-2 text-gray-400"
+                    className="-ml-2 p-2 text-gray-400"
                     onClick={() => setMobileMenuOpen(true)}
                   >
                     <Bars3Icon className="h-6 w-6" />
                   </button>
                 </div>
 
-                {/* Mobile Logo */}
-                <Link to="/" className="lg:hidden">
-                  <img className="h-32 mt-2 w-auto" src={logo} alt="Paw Mart" />
-                </Link>
+                {/* Right Side Icons */}
+                <div className="flex items-center gap-4">
+                  <Link to="/shopping-cart" className="relative group">
+                    <ShoppingCartIcon className="h-6 w-6 text-gray-500 group-hover:text-gray-700" />
+                    <span className="absolute -top-2 -right-2 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+                      {cartItems?.length || 0}
+                    </span>
+                  </Link>
 
-                {/* Right Icons */}
-                <div className="flex flex-1 items-center justify-end">
-                  <div className="flex items-center space-x-4">
-                    {isLoggedIn && (
-                      <Link to="/customer-profile" className="-m-2 p-2 text-gray-400 hover:text-gray-500">
-                        <UserIcon className="h-6 w-6" />
+                  {/* User Icon & Dropdown */}
+                  {isLoggedIn ? (
+                    <Menu as="div" className="relative inline-block text-left">
+                      <Menu.Button className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200">
+                        <UserIcon className="h-6 w-6 text-gray-600" />
+                      </Menu.Button>
+                      <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                      >
+                        <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                          <div className="py-1">
+                            <Menu.Item>
+                              {({ active }) => (
+                                <Link
+                                  to="/customer-profile"
+                                  className={`${
+                                    active ? "bg-gray-100" : ""
+                                  } flex items-center gap-2 px-4 py-2 text-sm text-gray-700`}
+                                >
+                                  <UserIcon className="h-5 w-5" />
+                                  Profile
+                                </Link>
+                              )}
+                            </Menu.Item>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <Link
+                                  to="/my-ads"
+                                  className={`${
+                                    active ? "bg-gray-100" : ""
+                                  } flex items-center gap-2 px-4 py-2 text-sm text-gray-700`}
+                                >
+                                  <RectangleStackIcon className="h-5 w-5" />
+                                  My Advertisements
+                                </Link>
+                              )}
+                            </Menu.Item>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <Link
+                                  to="/shipping-address"
+                                  className={`${
+                                    active ? "bg-gray-100" : ""
+                                  } flex items-center gap-2 px-4 py-2 text-sm text-gray-700`}
+                                >
+                                  <MapPinIcon className="h-5 w-5" />
+                                  Shipping Address
+                                </Link>
+                              )}
+                            </Menu.Item>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <button
+                                  onClick={handleLogout}
+                                  className={`${
+                                    active ? "bg-gray-100" : ""
+                                  } w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600`}
+                                >
+                                  <ArrowRightOnRectangleIcon className="h-5 w-5" />
+                                  Logout
+                                </button>
+                              )}
+                            </Menu.Item>
+                          </div>
+                        </Menu.Items>
+                      </Transition>
+                    </Menu>
+                  ) : (
+                    <>
+                      <Link to="/register" className="text-sm text-gray-700 hover:text-blue-700 font-medium">
+                        Register
                       </Link>
-                    )}
-                    <Link to="/shopping-cart" className="group -m-2 flex items-center p-2">
-                      <ShoppingCartIcon className="h-6 w-6 text-gray-400 group-hover:text-gray-500" />
-                      <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                        {cartItems?.length || 0}
-                      </span>
-                    </Link>
-                  </div>
+                      <Link to="/login" className="text-sm text-gray-700 hover:text-blue-700 font-medium">
+                        Sign In
+                      </Link>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

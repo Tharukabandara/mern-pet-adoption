@@ -31,6 +31,9 @@ import "react-toastify/dist/ReactToastify.css";
 import ManagePetCategories from "./components/Admin/Categories/ManagePetCategories";
 import PaymentSuccess from "./components/Users/Payment/PaymentSuccess";
 import PaymentCancel from "./components/Users/Payment/PaymentCancel";
+import ShippingAddressDetails from "./components/Users/Profile/ShippingAddressDetails";
+import ShippingAddress from "./components/Users/Profile/ShippingAddress";
+import MyPetAds from "./components/Users/Profile/MyPetAds";
 
 const App = () => {
   return (
@@ -76,6 +79,9 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/customer-profile" element={<CustomerProfile />} />
+        <Route path="/shipping-address" element={<ShippingAddress />} />
+        <Route path="/my-ads" element={<MyPetAds />} />
+
         {/* pet ads*/}
         <Route path="/pet-ads" element={<PetAdsPage />} />
         <Route path="/create-pet-ad" element={<CreatePetAd />} />

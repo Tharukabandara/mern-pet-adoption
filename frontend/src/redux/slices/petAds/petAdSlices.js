@@ -76,6 +76,40 @@ export const fetchPetAdAction = createAsyncThunk(
   }
 );
 
+// Get My Pet Ads
+export const fetchMyPetAdsAction = createAsyncThunk(
+  "petAd/myAds",
+  async (_, { rejectWithValue, getState }) => {
+    try {
+      const token = getState()?.users?.userAuth?.userInfo?.token;
+      const config = { headers: { Authorization: `Bearer ${token}` } };
+      const { data } = await axios.get(`${baseURL}/petAds/my-ads`, config);
+      return data.petAds;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+// Delete Pet Ad
+export const deletePetAdAction = createAsyncThunk(
+  "petAd/delete",
+  async (adId, { rejectWithValue, getState }) => {
+    try {
+      const token = getState()?.users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      await axios.delete(`${baseURL}/petAds/${adId}`, config);
+      return adId;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 // Slice
 const petAdSlice = createSlice({
   name: "petAds",
@@ -125,12 +159,31 @@ const petAdSlice = createSlice({
       state.error = action.payload;
     });
 
-    // // Reset Actions
+    // Fetch My Ads
+    builder.addCase(fetchMyPetAdsAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.petAds = action.payload;
+    });
+
+    // Delete Ad
+    builder.addCase(deletePetAdAction.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(deletePetAdAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.petAds = state.petAds.filter((ad) => ad._id !== action.payload);
+    });
+    builder.addCase(deletePetAdAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    });
+
+    // Reset Actions
     builder.addCase(resetSuccessAction, (state) => {
-  state.isAdded = false;
+      state.isAdded = false;
     });
     builder.addCase(resetErrAction, (state) => {
-    state.error = null;
+      state.error = null;
     });
   },
 });
