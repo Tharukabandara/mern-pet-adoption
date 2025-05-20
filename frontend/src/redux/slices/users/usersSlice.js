@@ -8,6 +8,7 @@ const initialState = {
   loading: false,
   error: null,
   users: [],
+  allUsers: [],
   user: {},
   profile: {},
   userAuth: {
@@ -79,7 +80,7 @@ export const getUserProfileAction = createAsyncThunk(
   }
 );
 
-// Update shipping address (fixed)
+// Update shipping address
 export const updateShippingAddressAction = createAsyncThunk(
   "users/update-shipping-address",
   async (
@@ -116,6 +117,25 @@ export const updateShippingAddressAction = createAsyncThunk(
         },
         config
       );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+// Fetch all users (admin only)
+export const fetchAllUsersAction = createAsyncThunk(
+  "users/fetchAll",
+  async (_, { rejectWithValue, getState }) => {
+    try {
+      const token = getState()?.users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.get(`${baseURL}/users`, config);
       return data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
@@ -167,7 +187,6 @@ const usersSlice = createSlice({
     builder.addCase(getUserProfileAction.fulfilled, (state, action) => {
       state.loading = false;
       state.profile = action.payload;
-
       if (state.userAuth.userInfo) {
         state.userAuth.userInfo.shippingAddress = action.payload?.user?.shippingAddress;
         state.userAuth.userInfo.hasShippingAddress = action.payload?.user?.hasShippingAddress;
@@ -196,6 +215,20 @@ const usersSlice = createSlice({
       state.error = action.payload;
     });
 
+    // Fetch all users
+    builder.addCase(fetchAllUsersAction.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(fetchAllUsersAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.allUsers = action.payload?.users || action.payload;
+    });
+    builder.addCase(fetchAllUsersAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    });
+
+    // Reset helpers
     builder.addCase(resetSuccessAction, (state) => {
       state.isAdded = false;
     });

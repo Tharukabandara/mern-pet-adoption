@@ -19,7 +19,7 @@ export default function CreatePetAd() {
   });
   const [files, setFiles] = useState([]);
 
-  const { petCategories } = useSelector((state) => state.petCategories);
+  const petCategories = useSelector((state) => state.petCategories);
   const { loading, error, isAdded } = useSelector((state) => state.petAds);
 
   useEffect(() => {

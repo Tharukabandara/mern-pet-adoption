@@ -1,97 +1,139 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUserAction } from "../../../redux/slices/users/usersSlice";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
-import ErrorMsg from "../../ErrorMsg/ErrorMsg";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const RegisterForm = () => {
-  //dispatch
-  //dispatch
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
     password: "",
   });
-  //---Destructuring---
+
   const { fullname, email, password } = formData;
-  //---onchange handler----
+
   const onChangeHandler = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  //---onsubmit handler----
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    dispatch(registerUserAction({ fullname, email, password}));
+    dispatch(registerUserAction({ fullname, email, password }));
   };
-  //select store data
+
   const { user, error, loading } = useSelector((state) => state?.users);
-  //redirect
-  // if (user) {
-  //   window.location.href = "/login";
-  // }
+
+  useEffect(() => {
+    if (user?._id) {
+      toast.success("Account created successfully! Please log in.");
+      navigate("/login");
+    }
+    if (error) {
+      toast.error(error?.message || "Registration failed");
+    }
+  }, [user, error, navigate]);
 
   return (
-    <>
-      <section className="relative overflow-x-hidden">
-        <div className="container px-4 mx-auto">
-          <div className="flex flex-wrap items-center">
-            <div className="w-full lg:w-2/6 px-4 mb-12 lg:mb-0">
-              <div className="py-20 text-center">
-                <h3 className="mb-8 text-4xl md:text-5xl font-bold font-heading">
-                  Signing up with social is super quick
-                </h3>
-                {/* errr */}
-                {error && <ErrorMsg message={error?.message} />}
-                <p className="mb-10">Please, do not hesitate</p>
-                <form onSubmit={onSubmitHandler}>
-                  <input
-                    name="fullname"
-                    value={fullname}
-                    onChange={onChangeHandler}
-                    className="w-full mb-4 px-12 py-6 border border-gray-200 focus:ring-blue-300 focus:border-blue-300 rounded-md"
-                    type="text"
-                    placeholder="Full Name"
-                  />
-                  <input
-                    name="email"
-                    value={email}
-                    onChange={onChangeHandler}
-                    className="w-full mb-4 px-12 py-6 border border-gray-200 focus:ring-blue-300 focus:border-blue-300 rounded-md"
-                    type="email"
-                    placeholder="Enter your email"
-                  />
-                  <input
-                    name="password"
-                    value={password}
-                    onChange={onChangeHandler}
-                    className="w-full mb-4 px-12 py-6 border border-gray-200 focus:ring-blue-300 focus:border-blue-300 rounded-md"
-                    type="password"
-                    placeholder="Enter your password"
-                  />
-                  {loading ? (
-                    <LoadingComponent />
-                  ) : (
+    <div
+      className="min-h-screen bg-cover bg-center flex items-center justify-center px-4"
+      style={{
+        backgroundImage:
+          'url("https://images.pexels.com/photos/1170986/pexels-photo-1170986.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")',
+      }}
+    >
+      <div className="w-full max-w-4xl flex bg-white/70 backdrop-blur-lg rounded-3xl overflow-hidden shadow-2xl">
+        {/* Left Panel - Form */}
+        <div className="w-full md:w-1/2 p-10 flex flex-col justify-center items-center">
+          <div className="w-full max-w-sm">
+            <div className="text-center mb-8">
+              <div className="text-red-600 text-3xl font-bold">🐾 Paw Mart</div>
+              <h2 className="mt-4 text-lg font-semibold text-gray-800">
+                Create an Account
+              </h2>
+            </div>
+            <form onSubmit={onSubmitHandler} className="space-y-6">
+              <input
+                name="fullname"
+                type="text"
+                placeholder="Full Name"
+                value={fullname}
+                onChange={onChangeHandler}
+                className="w-full px-4 py-3 border border-gray-300 rounded-full focus:ring-red-500 focus:border-red-500 text-sm bg-white bg-opacity-80"
+                required
+              />
+              <input
+                name="email"
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={onChangeHandler}
+                className="w-full px-4 py-3 border border-gray-300 rounded-full focus:ring-red-500 focus:border-red-500 text-sm bg-white bg-opacity-80"
+                required
+              />
+              <input
+                name="password"
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={onChangeHandler}
+                className="w-full px-4 py-3 border border-gray-300 rounded-full focus:ring-red-500 focus:border-red-500 text-sm bg-white bg-opacity-80"
+                required
+              />
+              {loading ? (
+                <LoadingComponent />
+              ) : (
+
+                <>
+
+                <button
+                  type="submit"
+                  className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-full transition"
+                >
+                  Register
+                </button>
+
+                <div className="mt-6 text-center">
+                  <p className="text-sm text-gray-900 mb-3">Already have an account?</p>
                   <button
-                    className="mt-12 md:mt-16 bg-blue-800 hover:bg-blue-900 text-white font-bold font-heading py-5 px-8 rounded-md uppercase">
-                    Register
+                    type="button"
+                    onClick={() => navigate("/login")}
+                    className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-full transition"
+                  >
+                    Login
                   </button>
-                  )}
-                </form>
-              </div>
+                </div>
+
+                </>
+                
+              )}
+            </form>
+            <div className="mt-6 text-center text-xs text-gray-500">
+              <span className="hover:underline cursor-pointer mr-4">
+                Terms & Conditions
+              </span>
+              <span className="hover:underline cursor-pointer">
+                Privacy Policy
+              </span>
             </div>
           </div>
         </div>
+
+        {/* Right Panel - Optional Image */}
         <div
-          className="hidden lg:block lg:absolute top-0 bottom-0 right-0 lg:w-3/6 bg-center bg-cover bg-no-repeat"
+          className="hidden md:block md:w-1/2 bg-cover bg-center"
           style={{
             backgroundImage:
-              'url("https://cdn.pixabay.com/photo/2017/03/29/04/47/high-heels-2184095_1280.jpg")',
+              'url("https://images.pexels.com/photos/1276553/pexels-photo-1276553.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")',
           }}
-        />
-      </section>
-    </>
+        ></div>
+      </div>
+    </div>
   );
 };
 

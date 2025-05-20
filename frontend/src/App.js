@@ -29,6 +29,8 @@ import SinglePetAd from "./components/Pet Ads/SinglePetAd";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ManagePetCategories from "./components/Admin/Categories/ManagePetCategories";
+import PaymentSuccess from "./components/Users/Payment/PaymentSuccess";
+import PaymentCancel from "./components/Users/Payment/PaymentCancel";
 
 const App = () => {
   return (
@@ -67,6 +69,9 @@ const App = () => {
         {/* shopping cart */}
         <Route path="/shopping-cart" element={<ShoppingCart />} />
         <Route path="/order-payment" element={<OrderPayment />} />
+        <Route path="/payment-success" element={<PaymentSuccess />} />
+        <Route path="/payment-cancel" element={<PaymentCancel />} />
+
         {/* users */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<RegisterForm />} />

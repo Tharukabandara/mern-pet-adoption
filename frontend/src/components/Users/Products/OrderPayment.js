@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createOrderAction } from "../../../redux/slices/orders/orderSlice";
 import { getUserProfileAction } from "../../../redux/slices/users/usersSlice";
-import { clearCart } from "../../../redux/slices/cart/cartSlice";
 import { useNavigate } from "react-router-dom";
 import AddShippingAddress from "../Forms/AddShippingAddress";
 import { toast } from "react-toastify";
@@ -42,10 +41,8 @@ export default function OrderPayment() {
       })
     )
       .unwrap()
-      .then(() => {
-        dispatch(clearCart()); 
-        toast.success("Order created successfully!");
-        navigate("/");
+      .then((res) => {
+        window.location.href = res.url;
       })
       .catch((err) => {
         toast.error(err?.message || "Failed to place order");

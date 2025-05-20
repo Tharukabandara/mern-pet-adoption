@@ -13,8 +13,8 @@ const Login = () => {
   const redirectPath = location.state?.from || "/";
 
   const [formData, setFormData] = useState({
-    email: "admin@gmail.com",
-    password: "1234",
+    email: "",
+    password: "",
   });
 
   const { email, password } = formData;
@@ -46,76 +46,87 @@ const Login = () => {
   }, [userInfo, error, navigate, redirectPath]);
 
   return (
-    <>
-      <section className="py-20 bg-gray-100 overflow-x-hidden">
-        <div className="relative container px-4 mx-auto">
-          <div className="absolute inset-0 bg-blue-200 my-24 -ml-4" />
-          <div className="relative flex flex-wrap bg-white">
-            <div className="w-full md:w-4/6 px-4">
-              <div className="lg:max-w-3xl mx-auto py-20 px-4 md:px-10 lg:px-20">
-                <h3 className="mb-8 text-4xl md:text-5xl font-bold font-heading">
-                  Login to your account
-                </h3>
-                <p className="mb-10 font-semibold font-heading">
-                  Happy to see you again
-                </p>
-
-                <form
-                  className="flex flex-wrap -mx-4"
-                  onSubmit={onSubmitHandler}
-                >
-                  <div className="w-full md:w-1/2 px-4 mb-8 md:mb-12">
-                    <label>
-                      <h4 className="mb-5 text-gray-400 uppercase font-bold font-heading">
-                        Your Email
-                      </h4>
-                      <input
-                        name="email"
-                        value={email}
-                        onChange={onChangeHandler}
-                        className="p-5 w-full border border-gray-200 focus:ring-blue-300 focus:border-blue-300 rounded-md"
-                        type="email"
-                      />
-                    </label>
-                  </div>
-                  <div className="w-full md:w-1/2 px-4 mb-12">
-                    <label>
-                      <h4 className="mb-5 text-gray-400 uppercase font-bold font-heading">
-                        Password
-                      </h4>
-                      <input
-                        name="password"
-                        value={password}
-                        onChange={onChangeHandler}
-                        className="p-5 w-full border border-gray-200 focus:ring-blue-300 focus:border-blue-300 rounded-md"
-                        type="password"
-                      />
-                    </label>
-                  </div>
-
-                  <div className="w-full px-4">
-                    {loading ? (
-                      <LoadingComponent />
-                    ) : (
-                      <button className="bg-blue-800 hover:bg-blue-900 text-white font-bold font-heading py-5 px-8 rounded-md uppercase">
-                        Login
-                      </button>
-                    )}
-                  </div>
-                </form>
-              </div>
+    <div
+      className="min-h-screen bg-cover bg-center flex items-center justify-center px-4"
+      style={{
+        backgroundImage:
+          'url("https://images.pexels.com/photos/1276553/pexels-photo-1276553.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")',
+      }}
+    >
+      <div className="w-full max-w-5xl flex bg-white/70 backdrop-blur-lg rounded-3xl overflow-hidden shadow-2xl">
+        {/* Left Panel - Form */}
+        <div className="w-full md:w-1/2 p-10 flex flex-col justify-center items-center">
+          <div className="w-full max-w-sm">
+            <div className="text-center mb-8">
+              <div className="text-red-600 text-3xl font-bold">🐾 Paw Mart</div>
+              <h2 className="mt-4 text-lg font-semibold text-gray-800">
+                Sign In To Continue
+              </h2>
             </div>
-            <div
-              className="w-full md:w-2/6 h-128 md:h-auto flex items-center lg:items-end px-4 pb-20 bg-cover bg-no-repeat"
-              style={{
-                backgroundImage:
-                  'url("https://cdn.pixabay.com/photo/2017/03/29/04/47/high-heels-2184095_1280.jpg")',
-              }}
-            ></div>
+            <form onSubmit={onSubmitHandler} className="space-y-6">
+              <input
+                name="email"
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={onChangeHandler}
+                className="w-full px-4 py-3 border border-gray-300 rounded-full focus:ring-red-500 focus:border-red-500 text-sm bg-white bg-opacity-80"
+                required
+              />
+              <input
+                name="password"
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={onChangeHandler}
+                className="w-full px-4 py-3 border border-gray-300 rounded-full focus:ring-red-500 focus:border-red-500 text-sm bg-white bg-opacity-80"
+                required
+              />
+              {loading ? (
+              <LoadingComponent />
+            ) : (
+              <>
+                <button
+                  className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-full transition"
+                  type="submit"
+                >
+                  Login
+                </button>
+
+                <div className="mt-6 text-center">
+                  <p className="text-sm text-gray-900 mb-3">Don't have an account?</p>
+                  <button
+                    type="button"
+                    onClick={() => navigate("/register")}
+                    className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-full transition"
+                  >
+                    Register
+                  </button>
+                </div>
+              </>
+            )}
+            </form>
+            <div className="mt-6 text-center text-xs text-gray-500">
+              <span className="hover:underline cursor-pointer mr-4">
+                Terms & Conditions
+              </span>
+              <span className="hover:underline cursor-pointer">
+                Privacy Policy
+              </span>
+            </div>
           </div>
         </div>
-      </section>
-    </>
+
+        {/* Right Panel - Image */}
+        <div
+          className="hidden md:block md:w-1/2 bg-cover bg-center"
+          style={{
+            backgroundImage:
+              'url("https://images.pexels.com/photos/160846/french-bulldog-summer-smile-joy-160846.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")',
+          }}
+        ></div>
+      </div>
+    </div>
   );
 };
 

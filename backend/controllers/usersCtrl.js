@@ -67,6 +67,19 @@ export const getUserProfileCtrl = asyncHandler(async (req, res) => {
   });
 });
 
+//@desc     Get all users (Admin)
+//@route    GET /api/v1/users
+//access    Private/Admin
+export const getAllUsersCtrl = asyncHandler(async (req, res) => {
+  const users = await User.find().populate("orders");
+  res.json({
+    status: "success",
+    message: "All users fetched",
+    users,
+  });
+});
+
+
 //@desc     Update user shipping address
 //route     PUT /api/v1/users/update/shipping
 //access    Private

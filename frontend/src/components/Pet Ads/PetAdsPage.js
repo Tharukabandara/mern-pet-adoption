@@ -17,6 +17,7 @@ export default function PetAdsPage() {
   const { petCategory, price, title = "", page = 1 } = query;
   const [priceRange, setPriceRange] = useState([0, 10000]);
   const [searchTitle, setSearchTitle] = useState(title);
+  const [selectedPet, setSelectedPet] = useState(petCategory || "");
 
   const { petAds, loading, error } = useSelector((state) => state.petAds);
   const { petCategories } = useSelector((state) => state.petCategories);
@@ -44,11 +45,13 @@ export default function PetAdsPage() {
   const clearFilters = () => {
     setPriceRange([0, 10000]);
     setSearchTitle("");
+    setSelectedPet("");
     navigate("/pet-ads");
   };
 
-  const setCategory = (catName) => updateQuery({ petCategory: catName });
-  const applyPriceFilter = () => updateQuery({ price: `${priceRange[0]}-${priceRange[1]}` });
+  const applyPriceFilter = () =>
+    updateQuery({ price: `${priceRange[0]}-${priceRange[1]}` });
+
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     updateQuery({ title: searchTitle });
@@ -58,7 +61,12 @@ export default function PetAdsPage() {
     setPriceRange(newValue);
   };
 
-  const totalPages = 5; // Placeholder — should come from backend pagination
+  const handlePetCategoryChange = (catName) => {
+    setSelectedPet(catName);
+    updateQuery({ petCategory: catName });
+  };
+
+  const totalPages = 5; // ideally from backend
   const paginationButtons = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
@@ -85,7 +93,11 @@ export default function PetAdsPage() {
         <button type="submit" className="bg-blue-500 text-white px-4 rounded">
           Search
         </button>
-        <button type="button" onClick={clearFilters} className="bg-red-200 text-red-600 px-4 rounded">
+        <button
+          type="button"
+          onClick={clearFilters}
+          className="bg-red-200 text-red-600 px-4 rounded"
+        >
           Clear filters
         </button>
       </form>
@@ -94,21 +106,36 @@ export default function PetAdsPage() {
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Pet Category Filter */}
-          <div>
-            <h3 className="text-lg font-medium">Pet Categories</h3>
-            {petCategories?.map((cat) => (
-              <div key={cat._id}>
-                <input
-                  type="radio"
-                  name="petCategory"
-                  onClick={() => setCategory(cat.name)}
-                  checked={petCategory === cat.name}
-                  className="mr-2"
-                />
-                <label>{cat.name}</label>
-              </div>
-            ))}
-          </div>
+          <Disclosure as="div" className="border-t border-gray-200 px-4 py-6">
+            {({ open }) => (
+              <>
+                <Disclosure.Button className="flex justify-between w-full text-gray-400 hover:text-gray-500">
+                  <span className="text-gray-900">Pet Category</span>
+                  {open ? (
+                    <MinusIcon className="h-5 w-5" />
+                  ) : (
+                    <PlusIcon className="h-5 w-5" />
+                  )}
+                </Disclosure.Button>
+                <Disclosure.Panel className="pt-6">
+                  <div className="space-y-4">
+                    {petCategories?.map((pet) => (
+                      <div key={pet._id} className="flex items-center">
+                        <input
+                          onChange={() => handlePetCategoryChange(pet.name)}
+                          checked={selectedPet === pet.name}
+                          name="pet"
+                          type="radio"
+                          className="h-4 w-4 text-indigo-600 border-gray-300"
+                        />
+                        <label className="ml-3 text-gray-700">{pet.name}</label>
+                      </div>
+                    ))}
+                  </div>
+                </Disclosure.Panel>
+              </>
+            )}
+          </Disclosure>
 
           {/* Price Filter */}
           <Disclosure as="div" className="border-t border-gray-200 px-4 py-6">
@@ -116,7 +143,11 @@ export default function PetAdsPage() {
               <>
                 <Disclosure.Button className="flex justify-between w-full text-gray-400 hover:text-gray-500">
                   <span className="text-gray-900">Price Range</span>
-                  <span>{open ? <MinusIcon className="h-5 w-5" /> : <PlusIcon className="h-5 w-5" />}</span>
+                  {open ? (
+                    <MinusIcon className="h-5 w-5" />
+                  ) : (
+                    <PlusIcon className="h-5 w-5" />
+                  )}
                 </Disclosure.Button>
                 <Disclosure.Panel className="pt-6">
                   <div className="px-2">
@@ -179,7 +210,11 @@ export default function PetAdsPage() {
                   <button
                     key={p}
                     onClick={() => updateQuery({ page: p })}
-                    className={`px-3 py-1 rounded ${p == page ? "bg-blue-600 text-white" : "bg-gray-200"}`}
+                    className={`px-3 py-1 rounded ${
+                      p == page
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-200 hover:bg-gray-300"
+                    }`}
                   >
                     {p}
                   </button>
