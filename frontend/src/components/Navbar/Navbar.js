@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import { Dialog, Menu, Popover, Transition } from "@headlessui/react";
+import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
   ShoppingCartIcon,
@@ -17,6 +17,8 @@ import logo from "./Logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUserAction } from "../../redux/slices/users/usersSlice";
 import { toast } from "react-toastify";
+import { clearCart } from "../../redux/slices/cart/cartSlice";
+
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -30,8 +32,9 @@ export default function Navbar() {
 
   const handleLogout = () => {
     dispatch(logoutUserAction());
+    dispatch(clearCart());
     toast.success("Successfully logged out.");
-    navigate("/login");
+    navigate("/");
   };
 
   return (

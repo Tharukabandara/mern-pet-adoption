@@ -2,19 +2,17 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createOrderAction } from "../../../redux/slices/orders/orderSlice";
 import { getUserProfileAction } from "../../../redux/slices/users/usersSlice";
-import { useNavigate } from "react-router-dom";
 import AddShippingAddress from "../Forms/AddShippingAddress";
 import { toast } from "react-toastify";
 
 export default function OrderPayment() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const cartItems = useSelector((state) => state.cart.cartItems);
   const shippingAddress = useSelector(
     (state) => state.users?.profile?.user?.shippingAddress
   );
-  const { loading, error } = useSelector((state) => state.orders);
+  const { loading } = useSelector((state) => state.orders);
 
   const totalPrice = cartItems?.reduce(
     (acc, item) => acc + item.price * item.qty,

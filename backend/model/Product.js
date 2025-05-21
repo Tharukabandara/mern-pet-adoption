@@ -39,6 +39,21 @@ const ProductSchema = new Schema(
       },
     ],
 
+    reviews: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Review",
+      },
+    ],
+    numReviews: {
+      type: Number,
+      default: 0,
+    },
+    averageRating: {
+      type: Number,
+      default: 0,
+    },
+
     price: {
       type: Number,
       required: true,

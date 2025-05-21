@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AdminDashboard from "./components/Admin/AdminDashboard";
 import Login from "./components/Users/Forms/Login";
@@ -6,7 +5,6 @@ import AddProduct from "./components/Admin/Products/AddProduct";
 import RegisterForm from "./components/Users/Forms/RegisterForm";
 import HomePage from "./components/HomePage/HomePage";
 import Navbar from "./components/Navbar/Navbar";
-import OrderHistory from "./components/Admin/Orders/ManageOrders";
 import OrderPayment from "./components/Users/Products/OrderPayment";
 import ManageCategories from "./components/Admin/Categories/ManageCategories";
 import UpdateProduct from "./components/Admin/Products/UpdateProduct";
@@ -20,7 +18,6 @@ import CustomerProfile from "./components/Users/Profile/CustomerProfile";
 import OrdersList from "./components/Admin/Orders/OdersList";
 import ManageOrders from "./components/Admin/Orders/ManageOrders";
 import Customers from "./components/Admin/Orders/Customers";
-import AuthRoute from "./components/AuthRoute/AuthRoute";
 import AdminRoutes from "./components/AuthRoute/AdminRoutes";
 import AddPetCategory from "./components/Admin/Categories/AddPetCategory";
 import PetAdsPage from "./components/Pet Ads/PetAdsPage";
@@ -31,7 +28,6 @@ import "react-toastify/dist/ReactToastify.css";
 import ManagePetCategories from "./components/Admin/Categories/ManagePetCategories";
 import PaymentSuccess from "./components/Users/Payment/PaymentSuccess";
 import PaymentCancel from "./components/Users/Payment/PaymentCancel";
-import ShippingAddressDetails from "./components/Users/Profile/ShippingAddressDetails";
 import ShippingAddress from "./components/Users/Profile/ShippingAddress";
 import MyPetAds from "./components/Users/Profile/MyPetAds";
 

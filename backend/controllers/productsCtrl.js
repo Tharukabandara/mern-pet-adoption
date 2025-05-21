@@ -2,6 +2,8 @@ import asyncHandler from "express-async-handler";
 import Product from "../model/Product.js";
 import Category from "../model/Category.js";
 import PetCategory from "../model/petCategory.js";
+import Review from "../model/Review.js";
+
 //@desc     Create new product
 //@route    POST /api/v1/products
 //@access   Private/Admin
@@ -158,7 +160,10 @@ export const getProductsCtrl = asyncHandler(async (req, res) => {
 //@access   Public
 
 export const getProductCtrl = asyncHandler(async(req, res)=>{
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id).populate({
+        path: "reviews",
+        populate: { path: "user", select: "fullname" }
+    });
     if (!product) {
         throw new Error("Product not found");
     }

@@ -1,22 +1,14 @@
 import { Fragment, useState } from "react";
-import { Dialog, Menu, Transition } from "@headlessui/react";
+import { Dialog, Transition } from "@headlessui/react";
 import { Link, Outlet } from "react-router-dom";
 import {
   Bars3CenterLeftIcon,
-  BellIcon,
-  ClockIcon,
   CogIcon,
-  CreditCardIcon,
-  DocumentChartBarIcon,
-  HomeIcon,
   QuestionMarkCircleIcon,
   ScaleIcon,
-  ShieldCheckIcon,
-  UserGroupIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import logo from "../Navbar/Logo.png";
-const ordersLinks = [
+  const ordersLinks = [
   {
     name: "Dashboard",
     href: "",
@@ -388,7 +380,7 @@ export default function Example() {
                             alt=""
                           />
                           <h1 className="ml-3 text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:leading-9">
-                            Good morning, Emilia Birch
+                            Hello, Tharuka Bandara
                           </h1>
                         </div>
                         <dl className="mt-6 flex flex-col sm:ml-3 sm:mt-1 sm:flex-row sm:flex-wrap">

@@ -30,7 +30,6 @@ export default function Products() {
 
   const { category, pet, price, sort, name = "", page = 1 } = query;
 
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [priceRange, setPriceRange] = useState([0, 1000]);
   const [selectedPet, setSelectedPet] = useState(pet || "");
   const [selectedCategory, setSelectedCategory] = useState(category || "");
