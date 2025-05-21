@@ -30,6 +30,9 @@ import PaymentSuccess from "./components/Users/Payment/PaymentSuccess";
 import PaymentCancel from "./components/Users/Payment/PaymentCancel";
 import ShippingAddress from "./components/Users/Profile/ShippingAddress";
 import MyPetAds from "./components/Users/Profile/MyPetAds";
+import StoryFeed from "./components/Users/Stories/StoryFeed";
+import CreateStory from "./components/Users/Stories/CreateStory";
+
 
 const App = () => {
   return (
@@ -82,6 +85,11 @@ const App = () => {
         <Route path="/pet-ads" element={<PetAdsPage />} />
         <Route path="/create-pet-ad" element={<CreatePetAd />} />
         <Route path="/pet-ads/:id" element={<SinglePetAd />} />
+
+        {/* stories*/}
+        <Route path="/story-feed" element={<StoryFeed />} />
+        <Route path="/create-story" element={<CreateStory />} />
+
       </Routes>
       <ToastContainer position="bottom-right" autoClose={3000} />
     </BrowserRouter>

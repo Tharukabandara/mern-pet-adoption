@@ -7,6 +7,7 @@ import petAdReducer from "../slices/petAds/petAdSlices";
 import cartReducer from "../slices/cart/cartSlice";
 import orderReducer from "../slices/orders/orderSlice";
 import reviewsReducer from "../slices/reviews/reviewSlice";
+import storyReducer from "../slices/stories/storySlice";
 
 //store
 
@@ -20,6 +21,7 @@ const store = configureStore({
         cart: cartReducer,
         orders: orderReducer,
         reviews: reviewsReducer,
+        stories: storyReducer,
     },
 });
 

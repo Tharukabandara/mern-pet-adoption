@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createPetAdAction } from "../../redux/slices/petAds/petAdSlices";
 import { fetchPetCategoriesAction } from "../../redux/slices/categories/petCategoriesSlice";
-import ErrorComponent from "../ErrorMsg/ErrorMsg";
-import SuccessMsg from "../SuccessMsg/SuccessMsg";
 import LoadingComponent from "../LoadingComp/LoadingComponent";
+import { toast } from "react-toastify";
 
 export default function CreatePetAd() {
   const dispatch = useDispatch();
@@ -26,6 +25,15 @@ export default function CreatePetAd() {
     dispatch(fetchPetCategoriesAction());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (isAdded) {
+      toast.success("Pet Ad created successfully!");
+    }
+    if (error) {
+      toast.error(error?.message || "Failed to create ad");
+    }
+  }, [isAdded, error]);
+
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -46,15 +54,11 @@ export default function CreatePetAd() {
     <div className="max-w-2xl mx-auto mt-10 bg-white p-8 rounded shadow">
       <h2 className="text-2xl font-bold mb-4 text-center">Post a Pet Ad</h2>
 
-      {error && <ErrorComponent message={error?.message} />}
-      {isAdded && <SuccessMsg message="Pet Ad created successfully!" />}
-
       <form onSubmit={handleSubmit} className="space-y-6">
-        {[
-          { label: "Title", name: "title" },
+        {[{ label: "Title", name: "title" },
           { label: "Location", name: "location" },
           { label: "Phone", name: "phone" },
-          { label: "Price", name: "price", type: "number" },
+          { label: "Price", name: "price", type: "number" }
         ].map(({ label, name, type = "text" }) => (
           <div key={name}>
             <label className="block text-sm font-medium text-gray-700">{label}</label>

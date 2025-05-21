@@ -5,18 +5,31 @@ import {
   fetchPetCategoriesAction,
   deletePetCategoryAction,
 } from "../../../redux/slices/categories/petCategoriesSlice";
-import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import NoDataFound from "../../NoDataFound/NoDataFound";
+import { toast } from "react-toastify";
 
 export default function ManagePetCategories() {
   const dispatch = useDispatch();
 
-  const { petCategories, loading, error } = useSelector((state) => state.petCategories);
+  const { petCategories, loading, error, isDeleted } = useSelector((state) => state.petCategories);
 
   useEffect(() => {
     dispatch(fetchPetCategoriesAction());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error?.message || "Failed to load pet categories");
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (isDeleted) {
+      toast.success("Pet category deleted successfully");
+      dispatch(fetchPetCategoriesAction());
+    }
+  }, [isDeleted, dispatch]);
 
   const deletePetCategoryHandler = (id) => {
     if (window.confirm("Are you sure you want to delete this pet category?")) {
@@ -44,8 +57,6 @@ export default function ManagePetCategories() {
 
       {loading ? (
         <LoadingComponent />
-      ) : error ? (
-        <ErrorMsg message={error?.message} />
       ) : petCategories?.length <= 0 ? (
         <NoDataFound />
       ) : (

@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import NoDataFound from "../../NoDataFound/NoDataFound";
 import {
@@ -25,6 +24,7 @@ export default function ManageStocks() {
         .unwrap()
         .then((res) => {
           toast.success(res?.message || "Product deleted successfully");
+          dispatch(fetchProductsAction()); // optional reload
         })
         .catch((err) => {
           toast.error(err?.message || "Error deleting product");
@@ -56,7 +56,7 @@ export default function ManageStocks() {
       {loading ? (
         <LoadingComponent />
       ) : error ? (
-        <ErrorMsg message={error?.message} />
+        <error message={error?.message} />
       ) : products?.length <= 0 ? (
         <NoDataFound />
       ) : (

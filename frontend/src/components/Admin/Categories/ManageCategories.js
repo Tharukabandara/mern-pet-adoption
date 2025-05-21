@@ -5,21 +5,32 @@ import {
   fetchCategoriesAction,
   deleteCategoryAction,
 } from "../../../redux/slices/categories/categoriesSlice";
-import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import NoDataFound from "../../NoDataFound/NoDataFound";
+import { toast } from "react-toastify";
 
 export default function ManageCategories() {
   const dispatch = useDispatch();
 
-  // Select data from redux
-  const { categories, loading, error } = useSelector((state) => state.categories);
+  const { categories, loading, error, isDeleted } = useSelector((state) => state.categories);
 
   useEffect(() => {
     dispatch(fetchCategoriesAction());
   }, [dispatch]);
 
-  // Delete category handler
+  useEffect(() => {
+    if (error) {
+      toast.error(error?.message || "Something went wrong while loading categories");
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (isDeleted) {
+      toast.success("Category deleted successfully");
+      dispatch(fetchCategoriesAction());
+    }
+  }, [isDeleted, dispatch]);
+
   const deleteCategoryHandler = (id) => {
     if (window.confirm("Are you sure you want to delete this category?")) {
       dispatch(deleteCategoryAction(id));
@@ -31,9 +42,7 @@ export default function ManageCategories() {
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <h1 className="text-xl font-semibold text-gray-900">All Categories</h1>
-          <p className="mt-2 text-sm text-gray-700">
-            List of all product categories.
-          </p>
+          <p className="mt-2 text-sm text-gray-700">List of all product categories.</p>
         </div>
         <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
           <Link
@@ -46,9 +55,7 @@ export default function ManageCategories() {
 
       {loading ? (
         <LoadingComponent />
-      ) : error ? (
-        <ErrorMsg message={error?.message} />
-      ) : categories?.length <= 0 ? (
+      ) : categories?.categories?.length <= 0 ? (
         <NoDataFound />
       ) : (
         <div className="mt-8 flex flex-col">
