@@ -16,6 +16,7 @@ export default function CreatePetAd() {
     phone: "",
     price: "",
   });
+  const [isFree, setIsFree] = useState(false);
   const [files, setFiles] = useState([]);
 
   const petCategories = useSelector((state) => state.petCategories);
@@ -47,7 +48,12 @@ export default function CreatePetAd() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(createPetAdAction({ ...formData, files }));
+    const dataToSubmit = {
+      ...formData,
+      price: isFree ? 0 : formData.price,
+      files,
+    };
+    dispatch(createPetAdAction(dataToSubmit));
   };
 
   return (
@@ -55,15 +61,16 @@ export default function CreatePetAd() {
       <h2 className="text-2xl font-bold mb-4 text-center">Post a Pet Ad</h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {[{ label: "Title", name: "title" },
+        {/* Title, Location, Phone */}
+        {[
+          { label: "Title", name: "title" },
           { label: "Location", name: "location" },
           { label: "Phone", name: "phone" },
-          { label: "Price", name: "price", type: "number" }
-        ].map(({ label, name, type = "text" }) => (
+        ].map(({ label, name }) => (
           <div key={name}>
             <label className="block text-sm font-medium text-gray-700">{label}</label>
             <input
-              type={type}
+              type="text"
               name={name}
               value={formData[name]}
               onChange={handleChange}
@@ -72,6 +79,35 @@ export default function CreatePetAd() {
             />
           </div>
         ))}
+
+        {/* Free Checkbox */}
+        <div className="flex items-center">
+          <input
+            type="checkbox"
+            id="free"
+            checked={isFree}
+            onChange={() => setIsFree(!isFree)}
+            className="mr-2"
+          />
+          <label htmlFor="free" className="text-sm text-gray-700">
+            This pet is free
+          </label>
+        </div>
+
+        {/* Price Field (conditional) */}
+        {!isFree && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Price</label>
+            <input
+              type="number"
+              name="price"
+              value={formData.price}
+              onChange={handleChange}
+              required
+              className="w-full border border-gray-300 rounded px-3 py-2 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+        )}
 
         {/* Pet Category Dropdown */}
         <div>

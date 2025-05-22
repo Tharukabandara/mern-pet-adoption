@@ -127,21 +127,23 @@ export const getPetAdsCtrl = asyncHandler(async (req, res) => {
     });
 });
 
-//@desc     Get single pet ad
-//@route    Get /api/v1/petAd/:id
-//@access   Public
+// @desc Get single pet ad
+// @route GET /api/v1/petAds/:id
+// @access Public
+export const getPetAdCtrl = asyncHandler(async (req, res) => {
+  const petAd = await PetAd.findById(req.params.id).populate("user", "fullname");
 
-export const getPetAdCtrl = asyncHandler(async(req, res)=>{
-    const petAd = await PetAd.findById(req.params.id);
-    if (!petAd) {
-        throw new Error("Pet Ad not found");
-    }
-    res.json({
-        status: "success",
-        message: "PetAd fetched successfully",
-        petAd,
-    });
+  if (!petAd) {
+    res.status(404);
+    throw new Error("Pet ad not found");
+  }
+
+  res.json({
+    status: "success",
+    petAd,
+  });
 });
+
 
 // GET /petAds/my-ads
 export const getMyPetAdsCtrl = asyncHandler(async (req, res) => {

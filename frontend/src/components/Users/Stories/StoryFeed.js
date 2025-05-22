@@ -4,11 +4,12 @@ import {
   fetchAllStoriesAction,
   deleteStoryAction,
 } from "../../../redux/slices/stories/storySlice";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+
 
 export default function StoryFeed() {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ export default function StoryFeed() {
   const [sortOrder, setSortOrder] = useState("desc");
   const [currentImageIndex, setCurrentImageIndex] = useState({});
   const [expandedStoryIds, setExpandedStoryIds] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchAllStoriesAction());
@@ -82,12 +84,19 @@ export default function StoryFeed() {
             <option value="asc">Oldest to Newest</option>
           </select>
 
-          <Link
-            to="/create-story"
+          <button
+            onClick={() => {
+              if (!userInfo?.userFound) {
+                toast.warn("Please log in to post a story.");
+                navigate("/login");
+              } else {
+                navigate("/create-story");
+              }
+            }}
             className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium"
           >
             Post a Story
-          </Link>
+          </button>
         </div>
       </div>
 

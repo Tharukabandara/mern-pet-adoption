@@ -41,18 +41,6 @@ export default function Example() {
           </div>
         </div>
 
-        {/* CTA Banner */}
-        <div className="bg-indigo-800 text-white text-center py-12" data-aos="zoom-in">
-          <h3 className="text-2xl font-bold">Join the Pet Community Today</h3>
-          <p className="mt-2">Find your perfect companion or sell your pet accessories with ease.</p>
-          <Link
-            to="/register"
-            className="mt-4 inline-block bg-white text-indigo-700 font-semibold py-2 px-6 rounded hover:bg-gray-200 transition"
-          >
-            Create Account
-          </Link>
-        </div>
-
         {/* Explore Accessories Section */}
         <div className="relative overflow-hidden px-4 sm:px-6 lg:px-8">
           <section
@@ -114,6 +102,18 @@ export default function Example() {
           </div>
         </main>
       </main>
+
+      {/* CTA Banner */}
+        <div className="bg-indigo-800 text-white text-center py-12" data-aos="zoom-in">
+          <h3 className="text-2xl font-bold">Join the Pet Community Today</h3>
+          <p className="mt-2">Find your perfect companion or sell your pet accessories with ease.</p>
+          <Link
+            to="/register"
+            className="mt-4 inline-block bg-white text-indigo-700 font-semibold py-2 px-6 rounded hover:bg-gray-200 transition"
+          >
+            Create Account
+          </Link>
+        </div>
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white mt-20 py-10 px-6 sm:px-10" data-aos="fade-up">

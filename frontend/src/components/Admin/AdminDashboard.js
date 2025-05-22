@@ -265,7 +265,7 @@ export default function Example() {
         </Transition.Root>
 
         {/* Static sidebar for desktop */}
-        <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
+        <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col pt-10">
           {/* Sidebar component */}
           <div className="flex flex-grow flex-col overflow-y-auto bg-cyan-900 pt-5 pb-4">
             <nav
@@ -349,7 +349,7 @@ export default function Example() {
           </div>
         </div>
 
-        <div className="flex flex-1 flex-col lg:pl-64">
+        <div className="flex flex-1 flex-col lg:pl-64 ">
           <div className="flex h-16 flex-shrink-0 border-b border-gray-200 bg-white lg:border-none">
             <button
               type="button"
@@ -414,7 +414,7 @@ export default function Example() {
                                 stroke-width="2"
                                 d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                             </svg>
-                            Date Joined: 12/12/2020
+                            Date Joined: 20/03/2025
                           </dd>
                           {/* email */}
                           <dd className="mt-3 flex items-center text-sm font-medium  text-gray-500 sm:mr-6 sm:mt-0">

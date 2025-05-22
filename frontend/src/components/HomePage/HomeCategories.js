@@ -2,11 +2,67 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { fetchCategoriesAction } from "../../redux/slices/categories/categoriesSlice";
+import { styled } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import ButtonBase from "@mui/material/ButtonBase";
+import Typography from "@mui/material/Typography";
+
+const ImageButton = styled(ButtonBase)(({ theme }) => ({
+  position: "relative",
+  height: 280,
+  borderRadius: "16px",
+  overflow: "hidden",
+  [theme.breakpoints.down("sm")]: {
+    width: "100% !important",
+    height: 140,
+  },
+  "&:hover, &.Mui-focusVisible": {
+    zIndex: 1,
+    "& .MuiImageBackdrop-root": {
+      opacity: 0.15,
+    },
+    "& .MuiImageMarked-root": {
+      display: "none",
+    },
+  },
+}));
+
+const ImageSrc = styled("span")({
+  position: "absolute",
+  left: 0,
+  right: 0,
+  top: 0,
+  bottom: 0,
+  backgroundSize: "cover",
+  backgroundPosition: "center 40%",
+});
+
+const Image = styled("span")(({ theme }) => ({
+  position: "absolute",
+  left: 0,
+  right: 0,
+  top: 0,
+  bottom: 0,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  color: theme.palette.common.white,
+}));
+
+const ImageBackdrop = styled("span")(({ theme }) => ({
+  position: "absolute",
+  left: 0,
+  right: 0,
+  top: 0,
+  bottom: 0,
+  backgroundColor: theme.palette.common.black,
+  opacity: 0.4,
+  transition: theme.transitions.create("opacity"),
+}));
 
 const HomeCategories = () => {
   const dispatch = useDispatch();
   const { categories, loading, error } = useSelector((state) => state.categories);
-
   const categoriesArray = categories?.categories ?? [];
 
   useEffect(() => {
@@ -19,36 +75,36 @@ const HomeCategories = () => {
   if (error) return <p className="text-center py-4 text-red-500">{error.message}</p>;
 
   return (
-    <div className="mt-4 flow-root">
-      <div className="-my-2">
-        <div className="relative box-content h-80 overflow-x-auto py-2 xl:overflow-visible">
-          <div className="min-w-screen-xl absolute flex space-x-8 px-4 sm:px-6 lg:px-8 xl:relative xl:grid xl:grid-cols-5 xl:gap-x-8 xl:space-x-0 xl:px-0">
-            {categoriesToShow.map((category) => (
-              <Link
-                key={category.name}
-                to={`/products?category=${encodeURIComponent(category.name)}`}
-                className="relative flex h-80 w-56 flex-col overflow-hidden rounded-lg p-6 hover:opacity-75 xl:w-auto"
+    <Box sx={{ display: "flex", flexWrap: "wrap", justifyContent: "center", width: "100%", mt: 4 }}>
+      {categoriesToShow.map((category) => (
+        <Link
+          key={category.name}
+          to={`/products?category=${encodeURIComponent(category.name)}`}
+          style={{ width: "19%", margin: "0.5%" }}
+        >
+          <ImageButton focusRipple sx={{ width: "100%" }}>
+            <ImageSrc style={{ backgroundImage: `url(${category.image})` }} />
+            <ImageBackdrop className="MuiImageBackdrop-root" />
+            <Image>
+              <Typography
+                component="span"
+                variant="h6"
+                color="inherit"
+                sx={{
+                  position: "relative",
+                  px: 2,
+                  fontWeight: "bold",
+                  fontSize: "1.2rem",
+                  textAlign: "center",
+                }}
               >
-                <span aria-hidden="true" className="absolute inset-0">
-                  <img
-                    src={category.image}
-                    alt={category.name}
-                    className="h-full w-full object-cover object-center"
-                  />
-                </span>
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-gray-800 opacity-50"
-                />
-                <span className="relative mt-auto text-center text-xl font-bold text-white">
-                  {category.name} ({category.products?.length || 0})
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
+                {category.name} ({category.products?.length || 0})
+              </Typography>
+            </Image>
+          </ImageButton>
+        </Link>
+      ))}
+    </Box>
   );
 };
 

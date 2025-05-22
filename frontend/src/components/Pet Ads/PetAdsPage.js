@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchPetAdsAction } from "../../redux/slices/petAds/petAdSlices";
 import { fetchPetCategoriesAction } from "../../redux/slices/categories/petCategoriesSlice";
 import { useNavigate, useLocation, Link } from "react-router-dom";
+import { formatDistanceToNow } from "date-fns";
 import queryString from "query-string";
 import { Disclosure } from "@headlessui/react";
 import Slider from "@mui/material/Slider";
-import { MinusIcon, PlusIcon } from "@heroicons/react/20/solid";
+import { MapPinIcon, MinusIcon, PlusIcon } from "@heroicons/react/20/solid";
 
 export default function PetAdsPage() {
   const dispatch = useDispatch();
@@ -14,10 +15,11 @@ export default function PetAdsPage() {
   const navigate = useNavigate();
   const query = queryString.parse(location.search);
 
-  const { petCategory, price, title = "", page = 1 } = query;
+  const { petCategory, price, title = "", page = 1, free } = query;
   const [priceRange, setPriceRange] = useState([0, 10000]);
   const [searchTitle, setSearchTitle] = useState(title);
   const [selectedPet, setSelectedPet] = useState(petCategory || "");
+  const [isFreeOnly, setIsFreeOnly] = useState(free === "true");
 
   const { petAds, loading, error } = useSelector((state) => state.petAds);
   const { petCategories } = useSelector((state) => state.petCategories);
@@ -29,9 +31,9 @@ export default function PetAdsPage() {
   useEffect(() => {
     const filters = {
       ...(petCategory && { petCategory }),
-      ...(price && { price }),
       ...(title && { title }),
       ...(page && { page }),
+      ...(isFreeOnly ? { price: "0-0" } : price && { price }),
     };
     dispatch(fetchPetAdsAction(filters));
   }, [dispatch, location.search]);
@@ -46,11 +48,12 @@ export default function PetAdsPage() {
     setPriceRange([0, 10000]);
     setSearchTitle("");
     setSelectedPet("");
+    setIsFreeOnly(false);
     navigate("/pet-ads");
   };
 
   const applyPriceFilter = () =>
-    updateQuery({ price: `${priceRange[0]}-${priceRange[1]}` });
+    updateQuery({ price: `${priceRange[0]}-${priceRange[1]}`, free: false });
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -66,7 +69,13 @@ export default function PetAdsPage() {
     updateQuery({ petCategory: catName });
   };
 
-  const totalPages = 5; // ideally from backend
+  const handleFreeChange = () => {
+    const newVal = !isFreeOnly;
+    setIsFreeOnly(newVal);
+    updateQuery({ free: newVal, price: newVal ? undefined : `${priceRange[0]}-${priceRange[1]}` });
+  };
+
+  const totalPages = 5;
   const paginationButtons = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
@@ -111,11 +120,7 @@ export default function PetAdsPage() {
               <>
                 <Disclosure.Button className="flex justify-between w-full text-gray-400 hover:text-gray-500">
                   <span className="text-gray-900">Pet Category</span>
-                  {open ? (
-                    <MinusIcon className="h-5 w-5" />
-                  ) : (
-                    <PlusIcon className="h-5 w-5" />
-                  )}
+                  {open ? <MinusIcon className="h-5 w-5" /> : <PlusIcon className="h-5 w-5" />}
                 </Disclosure.Button>
                 <Disclosure.Panel className="pt-6">
                   <div className="space-y-4">
@@ -143,30 +148,40 @@ export default function PetAdsPage() {
               <>
                 <Disclosure.Button className="flex justify-between w-full text-gray-400 hover:text-gray-500">
                   <span className="text-gray-900">Price Range</span>
-                  {open ? (
-                    <MinusIcon className="h-5 w-5" />
-                  ) : (
-                    <PlusIcon className="h-5 w-5" />
-                  )}
+                  {open ? <MinusIcon className="h-5 w-5" /> : <PlusIcon className="h-5 w-5" />}
                 </Disclosure.Button>
-                <Disclosure.Panel className="pt-6">
-                  <div className="px-2">
-                    <Slider
-                      value={priceRange}
-                      min={0}
-                      max={10000}
-                      onChange={handleSliderChange}
-                      valueLabelDisplay="auto"
-                      step={500}
+                <Disclosure.Panel className="pt-6 space-y-4">
+                  {/* Free checkbox */}
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={isFreeOnly}
+                      onChange={handleFreeChange}
+                      className="h-4 w-4 text-indigo-600"
                     />
-                    <button
-                      type="button"
-                      onClick={applyPriceFilter}
-                      className="mt-2 bg-indigo-600 text-white px-4 py-1 rounded"
-                    >
-                      Apply
-                    </button>
+                    <label className="ml-2 text-gray-700">Free</label>
                   </div>
+
+                  {/* Price Slider */}
+                  {!isFreeOnly && (
+                    <div className="px-2">
+                      <Slider
+                        value={priceRange}
+                        min={0}
+                        max={10000}
+                        onChange={handleSliderChange}
+                        valueLabelDisplay="auto"
+                        step={500}
+                      />
+                      <button
+                        type="button"
+                        onClick={applyPriceFilter}
+                        className="mt-2 bg-indigo-600 text-white px-4 py-1 rounded"
+                      >
+                        Apply
+                      </button>
+                    </div>
+                  )}
                 </Disclosure.Panel>
               </>
             )}
@@ -183,22 +198,37 @@ export default function PetAdsPage() {
             <p>No ads found.</p>
           ) : (
             <>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="space-y-4">
                 {petAds.map((ad) => (
                   <Link
                     to={`/pet-ads/${ad._id}`}
                     key={ad._id}
-                    className="border rounded-lg overflow-hidden shadow hover:shadow-md transition"
+                    className="flex items-start border border-gray-200 rounded-md overflow-hidden hover:shadow-md transition bg-white min-h-[180px]"
                   >
-                    <img
-                      src={ad?.images?.[0]}
-                      alt={ad.title}
-                      className="w-full h-48 object-cover"
-                    />
-                    <div className="p-4">
-                      <h4 className="text-lg font-semibold">{ad.title}</h4>
-                      <p className="text-sm text-gray-600">Rs. {ad.price}</p>
-                      <p className="text-xs text-gray-500 mt-1">{ad.location}</p>
+                    {/* Image */}
+                    <div className="h-[180px] w-48 flex-shrink-0">
+                      <img
+                        src={ad?.images?.[0]}
+                        alt={ad.title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+
+                    {/* Details */}
+                    <div className="flex-1 p-4 flex flex-col justify-between w-full">
+                      <div className="space-y-1">
+                        <h4 className="text-lg font-semibold text-gray-800">{ad.title}</h4>
+                        <p className="text-base font-semibold text-green-700">
+                          {ad.price === 0 ? "Free" : `Rs. ${ad.price}`}
+                        </p>
+                        <div className="flex items-center text-sm text-gray-700">
+                          <MapPinIcon className="h-4 w-4 text-gray-500 mr-1" />
+                          {ad.location}
+                        </div>
+                      </div>
+                      <p className="text-xs text-gray-400 text-right mt-2">
+                        Posted {formatDistanceToNow(new Date(ad.createdAt), { addSuffix: true })}
+                      </p>
                     </div>
                   </Link>
                 ))}

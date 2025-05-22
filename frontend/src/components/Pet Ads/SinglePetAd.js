@@ -29,100 +29,112 @@ export default function SinglePetAd() {
   if (error) return <div className="text-red-500 text-center py-10">{error?.message}</div>;
 
   return (
-    <div className="bg-white">
-      <main className="mx-auto mt-8 max-w-2xl px-4 pb-16 sm:px-6 sm:pb-24 lg:max-w-7xl lg:px-8">
-        <div className="lg:grid lg:auto-rows-min lg:grid-cols-12 lg:gap-x-8">
-          {/* Title and Price */}
-          <div className="lg:col-span-5 lg:col-start-8">
-            <div className="flex justify-between items-start">
-              <h1 className="text-2xl font-bold text-gray-900">{ad.title}</h1>
-              <p className="text-2xl font-bold text-indigo-700">Rs. {ad.price}</p>
+    <div className="bg-white py-10 px-4 max-w-7xl mx-auto">
+      <div className="grid lg:grid-cols-12 gap-10">
+        
+        {/* Left Column: Title, Image Carousel, Thumbnails */}
+        <div className="lg:col-span-8 space-y-6">
+          <h1 className="text-3xl font-bold text-gray-900">{ad.title}</h1>
+          <p className="text-sm text-gray-600">
+            Posted on {new Date(ad.createdAt).toLocaleString()}, {ad.location}
+          </p>
+
+          {/* Main Image with Nav Buttons */}
+          {images.length > 0 && (
+            <div className="relative max-w-full h-[400px] bg-gray-50 rounded overflow-hidden flex items-center justify-center">
+              <button
+                onClick={goToPreviousImage}
+                className="absolute left-2 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-2 shadow"
+              >
+                &#8592;
+              </button>
+
+              <img
+                src={images[currentImageIndex]}
+                alt={`Pet ${currentImageIndex + 1}`}
+                className="object-contain max-h-full w-full rounded"
+              />
+
+              <button
+                onClick={goToNextImage}
+                className="absolute right-2 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-2 shadow"
+              >
+                &#8594;
+              </button>
             </div>
-            <p className="mt-2 text-sm text-gray-500">Posted in {ad.location}</p>
-          </div>
+          )}
 
-          {/* Image Carousel */}
-          <div className="mt-8 lg:col-span-7 lg:col-start-1 lg:row-span-3 lg:row-start-1 flex flex-col items-center">
-            {images.length > 0 && (
-              <div className="relative w-full max-w-md mx-auto flex items-center justify-center">
-                <button
-                  onClick={goToPreviousImage}
-                  className="absolute left-0 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-l"
-                >
-                  &#8592;
-                </button>
-
+          {/* Thumbnails */}
+          {images.length > 1 && (
+            <div className="mt-4 flex gap-2 overflow-x-auto">
+              {images.map((img, index) => (
                 <img
-                  src={images[currentImageIndex]}
-                  alt={`Pet ${currentImageIndex + 1}`}
-                  className="rounded-lg object-contain max-h-[400px] w-full"
+                  key={index}
+                  src={img}
+                  alt={`Thumbnail ${index + 1}`}
+                  onClick={() => setCurrentImageIndex(index)}
+                  className={`h-20 w-20 object-cover rounded border cursor-pointer ${
+                    index === currentImageIndex
+                      ? "border-indigo-500"
+                      : "border-gray-300"
+                  }`}
                 />
+              ))}
+            </div>
+          )}
 
-                <button
-                  onClick={goToNextImage}
-                  className="absolute right-0 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-r"
-                >
-                  &#8594;
-                </button>
-              </div>
-            )}
-
-            {/* Thumbnails */}
-            {images.length > 1 && (
-              <div className="mt-4 flex space-x-2">
-                {images.map((img, index) => (
-                  <img
-                    key={index}
-                    src={img}
-                    alt={`Thumbnail ${index + 1}`}
-                    className={`h-14 w-14 rounded border cursor-pointer ${
-                      index === currentImageIndex ? "border-indigo-500" : "border-gray-300"
-                    }`}
-                    onClick={() => setCurrentImageIndex(index)}
-                  />
-                ))}
-              </div>
-            )}
+          {/* Description */}
+          <div>
+            <h2 className="text-lg font-semibold mb-1">Description</h2>
+            <p className="text-gray-700 whitespace-pre-line">{ad.description}</p>
           </div>
+        </div>
 
-          {/* Details */}
-          <div className="mt-8 lg:col-span-5">
-            <div className="space-y-4">
-              <div>
-                <h2 className="text-sm font-medium text-gray-900">Description</h2>
-                <p className="mt-2 text-gray-700 whitespace-pre-line">{ad.description}</p>
+        {/* Right Column: Seller Info & Contact */}
+        <div className="lg:col-span-4">
+          <div className="border rounded-lg shadow-sm p-6 space-y-4">
+            <div>
+              <p className="text-sm text-gray-500">For sale by</p>
+              <p className="text-lg font-semibold text-gray-800">
+                {ad.user?.fullname || "Unknown Seller"}
+              </p>
+            </div>
+
+            <div>
+              <p className="font-semibold text-gray-800 text-xl mb-1">
+                {ad.price === 0 ? "Free" : `Rs. ${ad.price}`}
+              </p>
+              <p className="text-sm text-gray-600">Category: {ad.petCategory}</p>
+            </div>
+
+            {/* Contact Buttons */}
+            {ad.phone && (
+              <div className="flex flex-col gap-3 pt-2">
+                <a
+                  href={`tel:${ad.phone}`}
+                  className="flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md font-medium"
+                >
+                  📞 Call Seller
+                </a>
+
+                <a
+                  href={`https://wa.me/+94${String(ad.phone).replace(/^0/, "")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center bg-green-600 hover:bg-green-700 text-white py-2 rounded-md font-medium"
+                >
+                  <FaWhatsapp className="mr-2" /> WhatsApp
+                </a>
               </div>
+            )}
 
-              <div className="text-sm text-gray-700 space-y-2">
-                <p><span className="font-medium">Pet Category:</span> {ad.petCategory}</p>
-                <p><span className="font-medium">Phone:</span> {ad.phone}</p>
-                <p><span className="font-medium">Location:</span> {ad.location}</p>
-              </div>
-
-              {/* Contact Buttons */}
-                {ad.phone && (
-                  <div className="flex flex-wrap gap-4 mt-4">
-                    <a
-                      href={`https://wa.me/+94${String(ad.phone).replace(/^0/, "")}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md font-medium"
-                    >
-                      <FaWhatsapp className="mr-2" /> WhatsApp
-                    </a>
-
-                    <a
-                      href={`tel:${ad.phone}`}
-                      className="flex items-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium"
-                    >
-                      📞 Call Now
-                    </a>
-                  </div>
-                )}
+            {/* Alert Box */}
+            <div className="mt-6 p-4 bg-blue-50 text-sm text-blue-800 border border-blue-200 rounded">
+              <strong>Stay Alert:</strong> Avoid scams. Never send money without verifying the seller.
             </div>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

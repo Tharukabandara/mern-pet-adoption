@@ -9,19 +9,31 @@ import {
   CurrencyDollarIcon,
 } from "@heroicons/react/24/outline";
 
-const StatCard = ({ title, value, Icon, color }) => (
-  <div className={`relative overflow-hidden rounded-lg bg-${color}-600 px-4 pt-5 pb-12 shadow sm:px-6 sm:pt-6`}>
-    <dt>
-      <div className="absolute rounded-md bg-indigo-500 p-3">
-        <Icon className="h-6 w-6 text-white" />
-      </div>
-      <p className="ml-16 truncate text-sm font-medium text-white">{title}</p>
-    </dt>
-    <dd className="ml-16 flex items-baseline pb-6 sm:pb-7">
-      <p className="text-2xl font-semibold text-white">Rs. {value?.toFixed(2)}</p>
-    </dd>
-  </div>
-);
+const bgColorMap = {
+  green: "bg-green-600",
+  blue: "bg-blue-600",
+  indigo: "bg-indigo-600",
+  red: "bg-red-600",
+  purple: "bg-purple-600",
+};
+
+const StatCard = ({ title, value, Icon, color }) => {
+  const bgColorClass = bgColorMap[color] || "bg-gray-600"; 
+  return (
+    <div className={`relative overflow-hidden rounded-lg ${bgColorClass} px-4 pt-5 pb-12 shadow sm:px-6 sm:pt-6`}>
+      <dt>
+        <div className="absolute rounded-md bg-indigo-500 p-3">
+          <Icon className="h-6 w-6 text-white" />
+        </div>
+        <p className="ml-16 truncate text-sm font-medium text-white">{title}</p>
+      </dt>
+      <dd className="ml-16 flex items-baseline pb-6 sm:pb-7">
+        <p className="text-2xl font-semibold text-white">Rs. {value?.toFixed(2)}</p>
+      </dd>
+    </div>
+  );
+};
+
 
 export default function OrdersStats() {
   const [stats, setStats] = useState({});

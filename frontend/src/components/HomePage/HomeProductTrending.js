@@ -2,6 +2,63 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductsAction } from "../../redux/slices/products/productSlices";
 import { Link } from "react-router-dom";
+import { styled } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import ButtonBase from "@mui/material/ButtonBase";
+import Typography from "@mui/material/Typography";
+
+const ImageButton = styled(ButtonBase)(({ theme }) => ({
+  position: "relative",
+  height: 300,
+  borderRadius: "16px",
+  overflow: "hidden",
+  [theme.breakpoints.down("sm")]: {
+    width: "100% !important",
+    height: 140,
+  },
+  "&:hover, &.Mui-focusVisible": {
+    zIndex: 1,
+    "& .MuiImageBackdrop-root": {
+      opacity: 0.15,
+    },
+    "& .MuiImageMarked-root": {
+      display: "none",
+    },
+  },
+}));
+
+const ImageSrc = styled("span")({
+  position: "absolute",
+  left: 0,
+  right: 0,
+  top: 0,
+  bottom: 0,
+  backgroundSize: "cover",
+  backgroundPosition: "center 40%",
+});
+
+const Image = styled("span")(({ theme }) => ({
+  position: "absolute",
+  left: 0,
+  right: 0,
+  top: 0,
+  bottom: 0,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  color: theme.palette.common.white,
+}));
+
+const ImageBackdrop = styled("span")(({ theme }) => ({
+  position: "absolute",
+  left: 0,
+  right: 0,
+  top: 0,
+  bottom: 0,
+  backgroundColor: theme.palette.common.black,
+  opacity: 0.4,
+  transition: theme.transitions.create("opacity"),
+}));
 
 const HomeProductTrending = () => {
   const dispatch = useDispatch();
@@ -11,16 +68,13 @@ const HomeProductTrending = () => {
     dispatch(fetchProductsAction());
   }, [dispatch]);
 
-  const trendingProducts = products?.slice(0, 4); // or filter for isTrending
+  const trendingProducts = products?.slice(0, 4);
 
   return (
     <section aria-labelledby="trending-heading">
       <div className="mx-auto max-w-7xl py-24 px-4 sm:px-6 sm:py-32 lg:px-8 lg:pt-32">
         <div className="md:flex md:items-center md:justify-between">
-          <h2
-            id="favorites-heading"
-            className="text-2xl font-bold tracking-tight text-gray-900"
-          >
+          <h2 id="favorites-heading" className="text-2xl font-bold tracking-tight text-gray-900">
             Pet Accessories
           </h2>
           <Link
@@ -34,31 +88,47 @@ const HomeProductTrending = () => {
         {loading && <p>Loading...</p>}
         {error && <p className="text-red-500">{error}</p>}
 
-        <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-4 md:gap-y-0 lg:gap-x-8">
+        <Box sx={{ display: "flex", flexWrap: "wrap", justifyContent: "center", width: "100%", mt: 4 }}>
           {trendingProducts?.map((product) => (
             <Link
               to={`/products/${product._id}`}
               key={product._id}
-              className="group relative"
+              style={{ width: "23%", margin: "1%" }}
             >
-              <div className="h-56 w-full overflow-hidden rounded-md group-hover:opacity-75 lg:h-72 xl:h-80">
-                <img
-                  src={product?.images?.[0] || "https://via.placeholder.com/300"}
-                  alt={product?.name}
-                  className="h-full w-full object-cover object-center"
+              <ImageButton focusRipple sx={{ width: "100%" }}>
+                <ImageSrc
+                  style={{
+                    backgroundImage: `url(${product?.images?.[0] || "https://via.placeholder.com/300"})`,
+                  }}
                 />
-              </div>
-              <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
-              <p className="mt-1 text-sm font-medium text-gray-900">Rs.{product.price}</p>
-              {/* Product details */}
-            <div className="mt-1000">
-              <div className="prose prose-sm mt-4 text-gray-500">
-                {product?.description}
-              </div>
-            </div>
+                <ImageBackdrop className="MuiImageBackdrop-root" />
+                <Image>
+                  <Typography
+                    component="span"
+                    variant="h6"
+                    color="inherit"
+                    sx={{
+                      position: "relative",
+                      fontWeight: "bold",
+                      fontSize: "1.2rem",
+                      textAlign: "center",
+                      px: 2,
+                    }}
+                  >
+                    {product.name}
+                  </Typography>
+                </Image>
+              </ImageButton>
+              <Typography
+                variant="body1"
+                className="text-center mt-2"
+                sx={{ fontWeight: 600, fontSize: "1rem", color: "#333" }}
+              >
+                Rs.{product.price}
+              </Typography>
             </Link>
           ))}
-        </div>
+        </Box>
       </div>
     </section>
   );

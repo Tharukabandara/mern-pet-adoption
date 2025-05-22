@@ -50,7 +50,9 @@ export default function MyPetAds() {
               />
               <div className="p-4 space-y-2">
                 <h4 className="text-lg font-semibold text-gray-800">{ad.title}</h4>
-                <p className="text-sm text-gray-600">Rs. {ad.price}</p>
+                <p className="text-base font-semibold text-green-700">
+                  {ad.price === 0 ? "Free" : `Rs. ${ad.price}`}
+                </p>
                 <p className="text-xs text-gray-500">{ad.location}</p>
                 <p className="text-xs text-gray-500">{new Date(ad.createdAt).toLocaleDateString()}</p>
                 <button

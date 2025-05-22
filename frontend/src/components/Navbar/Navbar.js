@@ -11,6 +11,7 @@ import {
   UserCircleIcon,
   RectangleStackIcon,
   MapPinIcon,
+  NewspaperIcon,
 } from "@heroicons/react/24/solid";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "./Logo.png";
@@ -107,6 +108,10 @@ export default function Navbar() {
                         <RectangleStackIcon className="h-5 w-5" />
                         My Ads
                       </Link>
+                      <Link to="/my-stories" className="flex items-center gap-2 text-sm font-medium text-gray-900">
+                      <NewspaperIcon className="h-5 w-5" />
+                      My Stories
+                    </Link>
                       <Link to="/shipping-address" className="flex items-center gap-2 text-sm font-medium text-gray-900">
                         <MapPinIcon className="h-5 w-5" />
                         Shipping Address
@@ -136,7 +141,7 @@ export default function Navbar() {
                 {/* Logo */}
                 <div className="flex-shrink-0">
                   <Link to="/">
-                    <img className="h-20 w-auto" src={logo} alt="Paw Mart" />
+                    <img className="h-24 w-auto" src={logo} alt="Paw Mart" />
                   </Link>
                 </div>
 
@@ -197,7 +202,7 @@ export default function Navbar() {
                                   } flex items-center gap-2 px-4 py-2 text-sm text-gray-700`}
                                 >
                                   <UserIcon className="h-5 w-5" />
-                                  Profile
+                                  My Orders
                                 </Link>
                               )}
                             </Menu.Item>
@@ -211,6 +216,19 @@ export default function Navbar() {
                                 >
                                   <RectangleStackIcon className="h-5 w-5" />
                                   My Advertisements
+                                </Link>
+                              )}
+                            </Menu.Item>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <Link
+                                  to="/my-stories"
+                                  className={`${
+                                    active ? "bg-gray-100" : ""
+                                  } flex items-center gap-2 px-4 py-2 text-sm text-gray-700`}
+                                >
+                                  <NewspaperIcon className="h-5 w-5" />
+                                  My Stories
                                 </Link>
                               )}
                             </Menu.Item>

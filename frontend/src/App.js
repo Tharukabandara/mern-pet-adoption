@@ -32,6 +32,7 @@ import ShippingAddress from "./components/Users/Profile/ShippingAddress";
 import MyPetAds from "./components/Users/Profile/MyPetAds";
 import StoryFeed from "./components/Users/Stories/StoryFeed";
 import CreateStory from "./components/Users/Stories/CreateStory";
+import MyStories from "./components/Users/Profile/MyStories";
 
 
 const App = () => {
@@ -89,6 +90,7 @@ const App = () => {
         {/* stories*/}
         <Route path="/story-feed" element={<StoryFeed />} />
         <Route path="/create-story" element={<CreateStory />} />
+        <Route path="/my-stories" element={<MyStories />} />
 
       </Routes>
       <ToastContainer position="bottom-right" autoClose={3000} />
