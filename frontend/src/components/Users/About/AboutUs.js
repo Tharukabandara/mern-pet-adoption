@@ -90,7 +90,7 @@ export default function AboutUs() {
           </div>
           <div>
             <h4 className="font-semibold mb-2">Contact</h4>
-            <p>Email: support@petmart.lk</p>
+            <p>Email: support@pawmart.lk</p>
             <p>Phone: +94 76 916 6548</p>
           </div>
         </div>

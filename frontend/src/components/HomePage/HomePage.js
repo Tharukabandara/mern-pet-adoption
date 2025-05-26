@@ -25,7 +25,7 @@ export default function Example() {
             data-aos="fade-up"
           >
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl xl:text-6xl">
-              Online Shopping Like Never Before
+              Online Pet Adoption and Accessory Marketplace
             </h1>
             <p className="mt-4 text-lg sm:text-xl">
               Leading Platform of Pet Adoption and Marketplace for Pet Accessories in Sri Lanka.
@@ -119,7 +119,7 @@ export default function Example() {
                 </div>
                 <div>
                   <h4 className="font-semibold mb-2">Contact</h4>
-                  <p>Email: support@petmart.lk</p>
+                  <p>Email: support@pawmart.lk</p>
                   <p>Phone: +94 76 916 6548</p>
                 </div>
               </div>
