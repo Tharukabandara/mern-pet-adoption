@@ -94,11 +94,11 @@ export default function MyStories() {
               >
                 {/* Image Carousel */}
                 {story.images?.length > 0 && (
-                  <div className="relative w-full h-80">
+                  <div className="relative w-full h-[450px]">
                     <img
                       src={story.images[imageIndex]}
                       alt={`Story ${imageIndex}`}
-                      className="w-full h-80 object-cover"
+                      className="w-full h-full object-cover"
                     />
                     {story.images.length > 1 && (
                       <>
@@ -121,7 +121,7 @@ export default function MyStories() {
 
                 {/* Text Content */}
                 <div className="p-6 space-y-4">
-                  <h3 className="text-2xl font-bold text-indigo-700">{story.title}</h3>
+                  <h3 className="text-2xl font-bold text-[#7f6363]">{story.title}</h3>
 
                   <p className="text-gray-700 text-sm whitespace-pre-wrap break-words leading-relaxed">
                     {isExpanded ? story.description : `${shortDesc}...`}

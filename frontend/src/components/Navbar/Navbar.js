@@ -81,6 +81,7 @@ export default function Navbar() {
                   <Link to="/story-feed" className="block text-sm font-medium text-gray-700">Story Feed</Link>
                   <Link to="/pet-ads" className="block text-sm font-medium text-gray-700">Pet Ads</Link>
                   <Link to="/products" className="block text-sm font-medium text-gray-700">Pet Accessories</Link>
+                  <Link to="/about-us" className="text-sm font-medium text-gray-700 hover:text-gray-900">About Us</Link>
                   {isAdmin && (
                     <Link to="/admin" className="block text-sm font-medium text-indigo-600">Admin Dashboard</Link>
                   )}
@@ -151,6 +152,7 @@ export default function Navbar() {
                   <Link to="/story-feed" className="block text-sm font-medium text-gray-700">Story Feed</Link>
                   <Link to="/pet-ads" className="text-sm font-medium text-gray-700 hover:text-gray-900">Pet Advertisement </Link>
                   <Link to="/products" className="text-sm font-medium text-gray-700 hover:text-gray-900">Pet Accessories</Link>
+                  <Link to="/about-us" className="text-sm font-medium text-gray-700 hover:text-gray-900">About Us</Link>
                   {isAdmin && (
                     <Link to="/admin" className="text-sm font-medium text-indigo-700 hover:text-indigo-900">Admin Dashboard</Link>
                   )}

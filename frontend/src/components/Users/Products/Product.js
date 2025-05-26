@@ -133,7 +133,7 @@ export default function Product() {
               {inStock && (
                 <button
                   onClick={addToCartHandler}
-                  className="mt-8 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700"
+                  className="mt-8 flex w-full items-center justify-center rounded-md border border-transparent bg-[#7f6363] hover:bg-[#6e5656] py-3 px-8 text-base font-medium text-white"
                 >
                   Add to cart
                 </button>
@@ -143,15 +143,15 @@ export default function Product() {
                 cartItems?.find((item) => item._id === product?._id) && (
                   <button
                     onClick={handleCheckout}
-                    className="mt-4 flex w-full items-center justify-center rounded-md border border-transparent bg-green-700 py-3 px-8 text-base font-medium text-white hover:bg-green-600"
+                    className="mt-4 flex w-full items-center justify-center rounded-md border border-transparent bg-green-700 hover:bg-green-600 py-3 px-8 text-base font-medium text-white "
                   >
                     Proceed to Checkout
                   </button>
                 )}
 
               <div className="mt-10">
-                <h2 className="text-sm font-medium text-gray-900">Description</h2>
-                <p className="mt-4 text-gray-700">{product?.description}</p>
+                <h2 className="text-lg font-semibold text-gray-800 mb-2">Description</h2>
+                <p className="text-sm text-gray-700 whitespace-pre-wrap break-words leading-relaxed text-justify border border-white rounded-md p-4 ">{product?.description}</p>
               </div>
             </div>
 

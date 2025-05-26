@@ -16,8 +16,14 @@ export default function ShippingAddress() {
   }, [dispatch]);
 
   return (
-    <div className="bg-gradient-to-r from-indigo-50 to-blue-50 min-h-screen py-16 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">
+    <div
+      className="min-h-screen bg-cover bg-center py-16 px-4 sm:px-6 lg:px-8"
+      style={{
+        backgroundImage: 'url("https://images.pexels.com/photos/7857533/pexels-photo-7857533.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")',
+      }}
+    >
+
+      <div className="relative max-w-2xl mx-auto bg-white/80 backdrop-blur-lg p-8 rounded-lg shadow-md z-10">
         <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
           Shipping Address
         </h2>
@@ -39,7 +45,7 @@ export default function ShippingAddress() {
             <div className="mt-6 text-center">
               <button
                 onClick={() => setIsEditing(true)}
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                className="bg-[#7f6363] hover:bg-[#6e5656] text-white px-4 py-2 rounded"
               >
                 Update Shipping Address
               </button>

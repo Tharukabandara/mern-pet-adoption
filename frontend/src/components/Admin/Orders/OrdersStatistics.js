@@ -14,7 +14,6 @@ const bgColorMap = {
   blue: "bg-blue-600",
   indigo: "bg-indigo-600",
   red: "bg-red-600",
-  purple: "bg-purple-600",
 };
 
 const StatCard = ({ title, value, Icon, color }) => {
@@ -62,7 +61,7 @@ export default function OrdersStats() {
         <StatCard title="Average Sale" value={stats.avgSale} Icon={ChartBarIcon} color="blue" />
         <StatCard title="Highest Sale" value={stats.maxSale} Icon={ArrowTrendingUpIcon} color="indigo" />
         <StatCard title="Lowest Sale" value={stats.minimumSale} Icon={ArrowDownIcon} color="red" />
-        <StatCard title="Today's Sales" value={todaySales} Icon={CalendarDaysIcon} color="purple" />
+        <StatCard title="Today's Sales" value={todaySales} Icon={CalendarDaysIcon} color="blue" />
       </dl>
     </div>
   );

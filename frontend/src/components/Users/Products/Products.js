@@ -108,7 +108,7 @@ export default function Products() {
   return (
     <div className="bg-white">
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex items-baseline justify-between border-b border-gray-200 pt-24 pb-6">
+        <div className="flex items-baseline justify-between border-b border-gray-200 pt-10 pb-6">
           <h1 className="text-4xl font-bold tracking-tight text-gray-900">
             Pet Accessories
           </h1>
@@ -278,7 +278,7 @@ export default function Products() {
                       <button
                         key={p}
                         onClick={() => updateQuery({ page: p })}
-                        className={`px-3 py-1 rounded ${parseInt(page) === p ? "bg-blue-600 text-white" : "bg-gray-200"}`}
+                        className={`px-3 py-1 rounded ${parseInt(page) === p ? "bg-[#7f6363] text-white" : "bg-gray-200"}`}
                       >
                         {p}
                       </button>

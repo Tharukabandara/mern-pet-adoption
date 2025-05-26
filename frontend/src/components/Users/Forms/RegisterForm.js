@@ -24,20 +24,28 @@ const RegisterForm = () => {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
+    if (!fullname || !email || !password) {
+      toast.warn("Please fill in all fields");
+      return;
+    }
     dispatch(registerUserAction({ fullname, email, password }));
   };
 
-  const { user, error, loading } = useSelector((state) => state?.users);
+    const { isRegistered, error, loading } = useSelector((state) => state?.users);
 
-  useEffect(() => {
-    if (user?._id) {
-      toast.success("Account created successfully! Please log in.");
-      navigate("/login");
-    }
-    if (error) {
-      toast.error(error?.message || "Registration failed");
-    }
-  }, [user, error, navigate]);
+    useEffect(() => {
+      if (isRegistered) {
+        toast.success("Account created successfully! Please log in.");
+        navigate("/login");
+      }
+    }, [isRegistered, navigate]);
+
+    useEffect(() => {
+      if (error) {
+        toast.error(error?.message || "Registration failed");
+      }
+    }, [error]);
+
 
   return (
     <div
@@ -85,34 +93,34 @@ const RegisterForm = () => {
                 className="w-full px-4 py-3 border border-gray-300 rounded-full focus:ring-red-500 focus:border-red-500 text-sm bg-white bg-opacity-80"
                 required
               />
+
               {loading ? (
                 <LoadingComponent />
               ) : (
-
                 <>
-
-                <button
-                  type="submit"
-                  className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-full transition"
-                >
-                  Register
-                </button>
-
-                <div className="mt-6 text-center">
-                  <p className="text-sm text-gray-900 mb-3">Already have an account?</p>
                   <button
-                    type="button"
-                    onClick={() => navigate("/login")}
-                    className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-full transition"
+                    type="submit"
+                    className="w-full bg-[#7f6363] hover:bg-[#6e5656] text-white font-bold py-3 rounded-full transition"
                   >
-                    Login
+                    Register
                   </button>
-                </div>
 
+                  <div className="mt-6 text-center">
+                    <p className="text-sm text-gray-900 mb-3">
+                      Already have an account?
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => navigate("/login")}
+                      className="w-full bg-[#7f6363] hover:bg-[#6e5656] text-white font-bold py-3 rounded-full transition"
+                    >
+                      Login
+                    </button>
+                  </div>
                 </>
-                
               )}
             </form>
+
             <div className="mt-6 text-center text-xs text-gray-500">
               <span className="hover:underline cursor-pointer mr-4">
                 Terms & Conditions

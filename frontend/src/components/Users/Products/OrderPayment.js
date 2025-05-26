@@ -131,7 +131,7 @@ export default function OrderPayment() {
                 <button
                   onClick={createOrderSubmitHandler}
                   disabled={loading}
-                  className="w-full rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-base font-medium text-white hover:bg-indigo-700"
+                  className="w-full rounded-md border border-transparent bg-green-700 hover:bg-green-600 py-3 px-4 text-base font-medium text-white"
                 >
                   {loading ? "Placing Order..." : "Place Order"}
                 </button>

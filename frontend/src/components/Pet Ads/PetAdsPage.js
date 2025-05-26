@@ -8,6 +8,7 @@ import queryString from "query-string";
 import { Disclosure } from "@headlessui/react";
 import Slider from "@mui/material/Slider";
 import { MapPinIcon, MinusIcon, PlusIcon } from "@heroicons/react/20/solid";
+import { toast } from "react-toastify";
 
 export default function PetAdsPage() {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ export default function PetAdsPage() {
 
   const { petAds, loading, error } = useSelector((state) => state.petAds);
   const { petCategories } = useSelector((state) => state.petCategories);
+  const { userInfo } = useSelector((state) => state.users.userAuth || {});
 
   useEffect(() => {
     dispatch(fetchPetCategoriesAction());
@@ -75,19 +77,28 @@ export default function PetAdsPage() {
     updateQuery({ free: newVal, price: newVal ? undefined : `${priceRange[0]}-${priceRange[1]}` });
   };
 
+  const handlePostAdClick = () => {
+    if (!userInfo?.userFound) {
+      toast.warn("Please log in to post an ad.");
+      navigate("/login");
+    } else {
+      navigate("/create-pet-ad");
+    }
+  };
+
   const totalPages = 5;
   const paginationButtons = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
-    <div className="max-w-7xl mx-auto p-4">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-3xl font-bold">Pet Advertisements</h1>
-        <Link
-          to="/create-pet-ad"
-          className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+    <div className="max-w-7xl mx-auto p-4 min-h-screen">
+      <div className="flex justify-between items-center mb-4 pt-8 pb-6">
+        <h1 className="text-4xl font-bold text-gray-800">Pet Advertisements</h1>
+        <button
+          onClick={handlePostAdClick}
+          className="bg-[#7f6363] hover:bg-[#6e5656] text-white px-4 py-2 rounded"
         >
           Post an Ad
-        </Link>
+        </button>
       </div>
 
       {/* Search bar */}
@@ -242,7 +253,7 @@ export default function PetAdsPage() {
                     onClick={() => updateQuery({ page: p })}
                     className={`px-3 py-1 rounded ${
                       p == page
-                        ? "bg-blue-600 text-white"
+                        ? "bg-[#7f6363] text-white"
                         : "bg-gray-200 hover:bg-gray-300"
                     }`}
                   >

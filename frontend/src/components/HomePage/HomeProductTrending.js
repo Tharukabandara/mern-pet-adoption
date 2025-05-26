@@ -79,7 +79,7 @@ const HomeProductTrending = () => {
           </h2>
           <Link
             to="/products"
-            className="hidden text-sm font-medium text-indigo-600 hover:text-indigo-500 md:block"
+            className="hidden text-sm font-medium text-[#7f6363] hover:text-[#5f4e4e] md:block"
           >
             Shop the accessories <span aria-hidden="true"> &rarr;</span>
           </Link>

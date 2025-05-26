@@ -172,8 +172,8 @@ const usersSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(registerUserAction.fulfilled, (state, action) => {
-      state.user = action.payload;
       state.loading = false;
+      state.isRegistered = true;
     });
     builder.addCase(registerUserAction.rejected, (state, action) => {
       state.error = action.payload;

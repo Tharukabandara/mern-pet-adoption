@@ -141,7 +141,7 @@ export default function ShoppingCart() {
               <div className="mt-6">
                 <button
                   onClick={handleCheckout}
-                  className="w-full inline-block rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                  className="w-full inline-block rounded-md border border-transparent bg-green-700 hover:bg-green-600 py-3 px-4 text-base font-medium text-white shadow-sm"
                 >
                   Proceed to Checkout
                 </button>

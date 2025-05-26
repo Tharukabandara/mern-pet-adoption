@@ -33,6 +33,7 @@ import MyPetAds from "./components/Users/Profile/MyPetAds";
 import StoryFeed from "./components/Users/Stories/StoryFeed";
 import CreateStory from "./components/Users/Stories/CreateStory";
 import MyStories from "./components/Users/Profile/MyStories";
+import AboutUs from "./components/Users/About/AboutUs";
 
 
 const App = () => {
@@ -81,6 +82,7 @@ const App = () => {
         <Route path="/customer-profile" element={<CustomerProfile />} />
         <Route path="/shipping-address" element={<ShippingAddress />} />
         <Route path="/my-ads" element={<MyPetAds />} />
+        <Route path="/about-us" element={<AboutUs/>} />
 
         {/* pet ads*/}
         <Route path="/pet-ads" element={<PetAdsPage />} />

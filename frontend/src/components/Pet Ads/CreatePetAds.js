@@ -58,7 +58,7 @@ export default function CreatePetAd() {
 
   return (
     <div className="max-w-2xl mx-auto mt-10 bg-white p-8 rounded shadow">
-      <h2 className="text-2xl font-bold mb-4 text-center">Post a Pet Ad</h2>
+      <h2 className="text-2xl text-[#7f6363] font-bold mb-4 text-center">Post a Pet Ad</h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Title, Location, Phone */}
@@ -156,7 +156,7 @@ export default function CreatePetAd() {
         <div>
           <button
             type="submit"
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded text-sm font-medium">
+            className="w-full bg-[#7f6363] hover:bg-[#6e5656] text-white py-2 rounded text-sm font-medium">
             {loading ? <LoadingComponent /> : "Post Ad"}
           </button>
         </div>

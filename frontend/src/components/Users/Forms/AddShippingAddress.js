@@ -54,7 +54,7 @@ export default function AddShippingAddress() {
       ))}
       <button
         type="submit"
-        className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 w-full"
+        className="bg-[#7f6363] hover:bg-[#6e5656] text-white px-4 py-2 rounded-md w-full"
       >
         Save Address
       </button>

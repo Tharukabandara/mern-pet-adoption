@@ -87,7 +87,7 @@ const Login = () => {
             ) : (
               <>
                 <button
-                  className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-full transition"
+                  className="w-full bg-[#7f6363] hover:bg-[#6e5656] text-white font-bold py-3 rounded-full transition"
                   type="submit"
                 >
                   Login
@@ -98,7 +98,7 @@ const Login = () => {
                   <button
                     type="button"
                     onClick={() => navigate("/register")}
-                    className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-full transition"
+                    className="w-full bg-[#7f6363] hover:bg-[#6e5656] text-white font-bold py-3 rounded-full transition"
                   >
                     Register
                   </button>

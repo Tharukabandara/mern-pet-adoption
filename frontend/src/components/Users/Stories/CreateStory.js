@@ -60,7 +60,7 @@ export default function CreateStory() {
 
   return (
     <div className="max-w-2xl mx-auto mt-10 bg-white p-8 rounded-lg shadow-md">
-      <h2 className="text-3xl font-bold mb-6 text-center text-indigo-700">Post a Story</h2>
+      <h2 className="text-3xl font-bold mb-6 text-center text-[#7f6363]">Post a Story</h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Title */}
@@ -132,7 +132,7 @@ export default function CreateStory() {
         <div>
           <button
             type="submit"
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-md text-sm font-medium"
+            className="w-full bg-[#7f6363] hover:bg-[#6e5656] text-white py-2 rounded-md text-sm font-medium"
           >
             {loading ? <LoadingComponent /> : "Post Story"}
           </button>
