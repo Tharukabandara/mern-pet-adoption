@@ -79,4 +79,9 @@ Follow these steps to get started locally:
 ```bash
 git clone https://github.com/Tharukabandara/mern-pet-adoption
 
+2. **Navigate to the project directory**
+
+```bash
+
+
 
