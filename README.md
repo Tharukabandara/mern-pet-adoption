@@ -35,14 +35,8 @@ _Connecting Pet Lovers, Empowering Adoption Dreams_
 ## 📚 Table of Contents
 
 - [📖 Overview](#-overview)
-- [🚀 Getting Started](#-getting-started)
   - [🧰 Prerequisites](#-prerequisites)
-  - [⚙️ Installation](#️-installation)
-  - [▶️ Usage](#️-usage)
-  - [🧪 Testing](#-testing)
-- [🔝 Return to Top](#mern-pet-adoption)
 
----
 
 ## 📖 Overview
 
@@ -56,9 +50,6 @@ It allows users to:
 
 The platform connects pet lovers and provides a seamless, user-friendly experience for adopting and caring for animals.
 
----
-
-## 🚀 Getting Started
 
 ### 🧰 Prerequisites
 
@@ -67,21 +58,3 @@ Make sure you have the following installed:
 - **Node.js** (v14 or later)
 - **npm** or **Yarn** as your package manager
 - **MongoDB** running locally or via cloud (e.g., Atlas)
-
----
-
-### ⚙️ Installation
-
-Follow these steps to get started locally:
-
-1. **Clone the repository**
-
-```bash
-git clone https://github.com/Tharukabandara/mern-pet-adoption
-
-2. **Navigate to the project directory**
-
-```bash
-
-
-
